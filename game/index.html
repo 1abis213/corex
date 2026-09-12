@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CoreX Run | Dodge the Grid & Win Discounts</title>
     <meta name="description" content="Play CoreX Run - dodge the neon barriers as the CoreX mascot. Every 10 points is $1 off a gaming computer purchase, max CAD$50!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,10 @@
             --red-bright: #e6283b;
             --dark: #07090d;
             --gold: #ffd700;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
         }
         html, body {
             width: 100%; height: 100%;
@@ -24,6 +28,9 @@
             touch-action: none;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-text-size-adjust: 100%;
+            overscroll-behavior: none;
         }
         #game-wrap {
             position: relative;
@@ -35,23 +42,26 @@
         /* Top Navigation Bar */
         .top-bar {
             position: absolute;
-            top: 16px; left: 20px; right: 20px;
+            top: calc(16px + var(--safe-top)); left: 12px; right: 12px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 10;
             pointer-events: auto;
         }
         .back-link {
             font-family: 'Montserrat', sans-serif;
-            font-size: 12px; font-weight: 800;
+            font-size: 11px; font-weight: 800;
             letter-spacing: 0.1em; text-transform: uppercase;
             color: rgba(255,255,255,0.7);
             text-decoration: none;
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.12);
-            padding: 8px 16px;
+            padding: 10px 14px;
             border-radius: 6px;
             transition: all 0.2s ease;
             backdrop-filter: blur(8px);
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
         }
         .back-link:hover {
             color: #fff;
@@ -63,11 +73,16 @@
             border: 1px solid rgba(255,255,255,0.12);
             color: #fff;
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 10px 14px;
             cursor: pointer;
             font-size: 14px;
             backdrop-filter: blur(8px);
             transition: background 0.2s;
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .sound-btn:hover { background: rgba(255,255,255,0.15); }
 
@@ -76,7 +91,7 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             display: flex; flex-direction: column; justify-content: space-between;
-            padding: 70px 24px 24px;
+            padding: calc(68px + var(--safe-top)) 14px calc(14px + var(--safe-bottom));
         }
         .hud-top {
             display: flex; justify-content: space-between; align-items: flex-start;
@@ -86,7 +101,7 @@
         }
         #score-val {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(42px, 8vw, 76px);
+            font-size: clamp(36px, 8vw, 76px);
             font-weight: 900;
             letter-spacing: -0.03em;
             color: #fff;
@@ -97,21 +112,24 @@
             display: inline-flex; align-items: center; gap: 6px;
             background: rgba(166,30,43,0.25);
             border: 1px solid rgba(166,30,43,0.6);
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 4px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 11px; font-weight: 800;
-            letter-spacing: 0.12em;
+            font-size: 10px; font-weight: 800;
+            letter-spacing: 0.10em;
             color: #ff8b97;
             text-transform: uppercase;
-            margin-top: 6px;
+            margin-top: 4px;
             width: fit-content;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .hud-reward-box {
             background: rgba(12,15,20,0.85);
             border: 1px solid rgba(255,215,0,0.35);
             border-radius: 8px;
-            padding: 10px 16px;
+            padding: 8px 12px;
             text-align: right;
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
@@ -143,17 +161,19 @@
         /* Floating Cha-Ching Notification */
         #cha-ching-banner {
             position: absolute;
-            top: 18%; left: 50%;
+            top: 22%; left: 50%;
             transform: translate(-50%, -50%) scale(0.7);
             background: linear-gradient(135deg, rgba(20,24,34,0.95), rgba(166,30,43,0.4));
             border: 2px solid var(--gold);
             border-radius: 99px;
-            padding: 10px 24px;
+            padding: 10px 20px;
             display: flex; align-items: center; gap: 8px;
             box-shadow: 0 0 35px rgba(255,215,0,0.6);
             opacity: 0; pointer-events: none;
             transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
             z-index: 30;
+            max-width: 90vw;
+            white-space: nowrap;
         }
         #cha-ching-banner.show {
             opacity: 1;
@@ -176,9 +196,11 @@
             align-items: center; justify-content: center;
             background: rgba(7,9,13,0.86);
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            padding: 24px; text-align: center;
+            padding: calc(16px + var(--safe-top)) 20px calc(16px + var(--safe-bottom));
+            text-align: center;
             z-index: 20;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .hidden, .screen.hidden { display: none !important; }
 
@@ -188,7 +210,7 @@
         }
         .game-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(32px, 8vw, 56px);
+            font-size: clamp(28px, 8vw, 56px);
             font-weight: 900;
             letter-spacing: -0.02em;
             text-transform: uppercase;
@@ -206,9 +228,9 @@
             margin-top: 6px;
         }
         #mascot-canvas {
-            width: clamp(140px, 26vw, 190px);
-            height: clamp(90px, 17vw, 126px);
-            margin-bottom: 12px;
+            width: clamp(120px, 26vw, 190px);
+            height: clamp(80px, 17vw, 126px);
+            margin-bottom: 10px;
             filter: drop-shadow(0 0 25px rgba(166,30,43,0.85));
             animation: floatMascot 2.2s ease-in-out infinite alternate;
         }
@@ -231,11 +253,11 @@
         }
         .reward-banner-tag {
             font-family: 'Montserrat', sans-serif;
-            font-size: 11px; font-weight: 900;
-            letter-spacing: 0.16em; text-transform: uppercase;
+            font-size: 10px; font-weight: 900;
+            letter-spacing: 0.12em; text-transform: uppercase;
             color: var(--gold);
             display: inline-flex; align-items: center; gap: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .reward-banner-title {
             font-family: 'Montserrat', sans-serif;
@@ -265,7 +287,7 @@
             background: var(--red);
             color: #fff;
             border: none;
-            padding: 15px 36px;
+            padding: 14px 32px;
             font-family: 'Montserrat', sans-serif;
             font-size: clamp(13px, 3vw, 16px);
             font-weight: 900;
@@ -276,8 +298,10 @@
             overflow: hidden;
             transition: box-shadow 0.25s ease, transform 0.2s ease;
             box-shadow: 0 6px 28px rgba(166,30,43,0.55);
-            min-width: 190px;
+            min-width: 180px;
+            min-height: 48px;
             touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         .btn span { display: inline-block; transform: skew(15deg); }
         .btn::before {
@@ -321,13 +345,13 @@
         .btn-share:hover { box-shadow: 0 8px 24px rgba(255,215,0,0.4); }
 
         .btn-row {
-            display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 14px;
+            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 12px;
         }
 
         /* Game Over Screen */
         .go-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(24px, 6vw, 42px);
+            font-size: clamp(22px, 6vw, 42px);
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -0.01em;
@@ -335,14 +359,15 @@
             margin-bottom: 4px;
         }
         .go-sub {
-            font-size: clamp(12px, 2.6vw, 14px);
+            font-size: clamp(11px, 2.6vw, 14px);
             color: rgba(255,255,255,0.5);
-            margin-bottom: 18px;
-            max-width: 360px;
+            margin-bottom: 14px;
+            max-width: 340px;
+            line-height: 1.4;
         }
         .go-score-grid {
             display: grid; grid-template-columns: 1fr 1fr;
-            gap: 12px; max-width: 440px; width: 100%;
+            gap: 10px; max-width: 440px; width: 100%;
             margin-bottom: 16px;
         }
         .go-stat-card {
@@ -360,7 +385,7 @@
         }
         .go-stat-num {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(34px, 7vw, 48px);
+            font-size: clamp(28px, 7vw, 48px);
             font-weight: 900;
             color: #fff;
             line-height: 1;
@@ -382,9 +407,9 @@
             background: linear-gradient(135deg, rgba(20,24,34,0.95) 0%, rgba(166,30,43,0.25) 100%);
             border: 2px solid var(--gold);
             border-radius: 12px;
-            padding: 18px 20px;
+            padding: 14px 16px;
             max-width: 440px; width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 0 30px rgba(255,215,0,0.2);
             text-align: center;
         }
@@ -397,7 +422,7 @@
         }
         .go-discount-val {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(28px, 6vw, 40px);
+            font-size: clamp(24px, 6vw, 40px);
             font-weight: 900;
             color: #fff;
             line-height: 1.1;
@@ -420,13 +445,13 @@
             border: 2px solid var(--red-bright);
             box-shadow: 0 0 40px rgba(166,30,43,0.8), inset 0 0 20px rgba(166,30,43,0.4);
             border-radius: 12px;
-            padding: 18px 36px;
+            padding: 14px 24px;
             text-align: center;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
             z-index: 15;
-            white-space: nowrap;
+            max-width: 88vw;
         }
         #level-announcement.show {
             opacity: 1;
@@ -450,7 +475,7 @@
         }
 
         #toast {
-            position: absolute; bottom: 28px; left: 50%;
+            position: absolute; bottom: calc(28px + var(--safe-bottom)); left: 50%;
             transform: translateX(-50%) translateY(20px);
             background: rgba(255,255,255,0.12);
             backdrop-filter: blur(8px);
@@ -460,12 +485,45 @@
             white-space: nowrap; opacity: 0; pointer-events: none;
             transition: opacity 0.3s, transform 0.3s;
             z-index: 50;
+            max-width: 90vw;
         }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
         @media (prefers-reduced-motion: reduce) {
             #mascot-canvas, .new-best-flash { animation: none; }
+        }
+
+        /* Mobile-specific overrides */
+        @media (max-width: 480px) {
+            .top-bar { top: calc(10px + var(--safe-top)); left: 8px; right: 8px; }
+            .back-link { font-size: 10px; padding: 8px 10px; letter-spacing: 0.05em; }
+            .sound-btn { font-size: 13px; padding: 8px 10px; }
+            #hud { padding: calc(60px + var(--safe-top)) 10px calc(10px + var(--safe-bottom)); }
+            .hud-top { gap: 8px; }
+            .hud-reward-box { padding: 6px 10px; border-radius: 6px; }
+            .hud-discount-label { font-size: 9px; }
+            .hud-discount-val { font-size: clamp(14px, 4vw, 22px); }
+            .hud-next-progress { font-size: 9px; }
+            .go-score-grid { gap: 8px; }
+            .go-stat-card { padding: 10px 12px; }
+            .btn { min-width: 140px; padding: 12px 24px; font-size: 12px; }
+            .btn-row { gap: 10px; }
+            .reward-banner { padding: 12px 16px; margin-bottom: 16px; }
+            .go-discount-card { padding: 14px 16px; margin-bottom: 14px; }
+            #level-announcement { padding: 12px 18px; }
+            .lvl-ann-title { font-size: clamp(16px, 5vw, 28px); }
+            .cha-ching-text { font-size: clamp(13px, 4vw, 20px); }
+            #cha-ching-banner { padding: 8px 16px; gap: 6px; }
+        }
+        @media (max-height: 600px) {
+            .reward-banner { margin-bottom: 10px; padding: 10px 14px; }
+            .logo-area { margin-bottom: 10px; }
+            #mascot-canvas { width: clamp(100px, 22vw, 140px); height: clamp(66px, 15vw, 93px); margin-bottom: 8px; }
+            .game-title { font-size: clamp(26px, 7vw, 42px); }
+            .tap-hint { margin-bottom: 12px; }
+            .btn { padding: 10px 24px; }
+            .btn-row { margin-top: 10px; }
         }
     </style>
 </head>
@@ -775,10 +833,10 @@ function resize() {
     canvas.height = H * DPR;
     canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
-    ctx.scale(DPR, DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
     // Responsive player size (scaled gracefully on phone or monitor, maintaining 1.43 aspect ratio)
-    const ph = Math.min(94, Math.max(72, Math.round(H * 0.115)));
+    const ph = Math.min(94, Math.max(56, Math.round(H * 0.105)));
     PLAYER.h = ph;
     PLAYER.w = Math.round(ph * 1.43);
 }
@@ -825,6 +883,7 @@ let flashAlpha = 0;
 
 // Dynamic difficulty scaling
 function getLevelConfig(s) {
+    const pipeWidth = W < 400 ? 44 : W < 600 ? 52 : 58;
     if (s < 10) {
         return {
             level: 1,
@@ -832,7 +891,8 @@ function getLevelConfig(s) {
             speed: 235,
             gapRatio: 0.33,
             interval: 1.85,
-            oscillating: false
+            oscillating: false,
+            pipeW: pipeWidth
         };
     } else if (s < 25) {
         return {
@@ -841,7 +901,8 @@ function getLevelConfig(s) {
             speed: 285,
             gapRatio: 0.285,
             interval: 1.62,
-            oscillating: false
+            oscillating: false,
+            pipeW: pipeWidth
         };
     } else if (s < 45) {
         return {
@@ -852,7 +913,8 @@ function getLevelConfig(s) {
             interval: 1.45,
             oscillating: true,
             oscSpeed: 1.6,
-            oscAmp: 30
+            oscAmp: 30,
+            pipeW: pipeWidth
         };
     } else if (s < 70) {
         return {
@@ -863,7 +925,8 @@ function getLevelConfig(s) {
             interval: 1.30,
             oscillating: true,
             oscSpeed: 2.2,
-            oscAmp: 44
+            oscAmp: 44,
+            pipeW: pipeWidth
         };
     } else if (s < 100) {
         return {
@@ -874,7 +937,8 @@ function getLevelConfig(s) {
             interval: 1.18,
             oscillating: true,
             oscSpeed: 2.8,
-            oscAmp: 55
+            oscAmp: 55,
+            pipeW: pipeWidth
         };
     } else {
         return {
@@ -885,7 +949,8 @@ function getLevelConfig(s) {
             interval: 1.08,
             oscillating: true,
             oscSpeed: 3.3,
-            oscAmp: 65
+            oscAmp: 65,
+            pipeW: pipeWidth
         };
     }
 }
@@ -916,7 +981,8 @@ function triggerChaChingBanner(dollarAmount) {
     const msg = document.getElementById('cha-ching-msg');
     const hudReward = document.getElementById('hud-reward-box');
 
-    msg.textContent = `CHA-CHING! +$1 OFF (CAD $${dollarAmount} TOTAL)`;
+    const isMobile = window.innerWidth < 480;
+    msg.textContent = isMobile ? `+$1 OFF! ($${dollarAmount} TOTAL)` : `CHA-CHING! +$1 OFF (CAD $${dollarAmount} TOTAL)`;
     banner.classList.add('show');
     hudReward.classList.add('cha-ching-glow');
 
@@ -941,12 +1007,27 @@ function announceLevelUp(newLevel, name) {
     const title = document.getElementById('ann-title');
     const sub = document.getElementById('ann-sub');
     
-    title.textContent = `LEVEL ${newLevel}: ${name}`;
     const disc = calculateDiscount(score);
-    sub.textContent = disc > 0 ? `SPEED UP • $${disc} CAD DISCOUNT ACTIVE!` : `SPEED & HAZARDS INCREASED!`;
+    title.textContent = `LEVEL ${newLevel}`;
+    sub.textContent = `${name}`;
+    
+    // Add discount info as a separate line if applicable
+    const existingExtra = ann.querySelector('.lvl-ann-extra');
+    if (existingExtra) existingExtra.remove();
+    if (disc > 0) {
+        const extra = document.createElement('div');
+        extra.className = 'lvl-ann-extra';
+        extra.style.cssText = 'font-size:12px;color:#ffd700;margin-top:6px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;';
+        extra.textContent = `$${disc} CAD DISCOUNT ACTIVE!`;
+        ann.appendChild(extra);
+    }
     
     ann.classList.add('show');
-    setTimeout(() => { ann.classList.remove('show'); }, 2200);
+    setTimeout(() => { 
+        ann.classList.remove('show');
+        const extraEl = ann.querySelector('.lvl-ann-extra');
+        if (extraEl) setTimeout(() => extraEl.remove(), 500);
+    }, 2200);
 }
 
 // ----------------------------------------------------
@@ -1134,7 +1215,8 @@ function update(dt) {
             phase: Math.random() * Math.PI * 2,
             isOscillating: cfg.oscillating && Math.random() > 0.25,
             oscSpeed: cfg.oscSpeed || 2,
-            oscAmp: cfg.oscAmp || 35
+            oscAmp: cfg.oscAmp || 35,
+            w: cfg.pipeW
         });
     }
 
@@ -1149,7 +1231,7 @@ function update(dt) {
         }
 
         // Scoring when passing through pillar!
-        if (!p.scored && p.x + PIPE_W < PLAYER.x + PLAYER.w * 0.3) {
+        if (!p.scored && p.x + (p.w || PIPE_W) < PLAYER.x + PLAYER.w * 0.3) {
             p.scored = true;
             score++;
 
@@ -1168,7 +1250,7 @@ function update(dt) {
     });
 
     // Remove offscreen pipes
-    pipes = pipes.filter(p => p.x + PIPE_W > -40);
+    pipes = pipes.filter(p => p.x + (p.w || PIPE_W) > -40);
 
     // Hitbox collision (Fair, tight hitbox centered on the robot body)
     const hitW = PLAYER.w * 0.68;
@@ -1177,7 +1259,8 @@ function update(dt) {
     const hitY = PLAYER.y + (PLAYER.h - hitH) * 0.5;
 
     for (const p of pipes) {
-        if (hitX < p.x + PIPE_W && hitX + hitW > p.x) {
+        const pw = p.w || PIPE_W;
+        if (hitX < p.x + pw && hitX + hitW > p.x) {
             if (hitY < p.gapY || hitY + hitH > p.gapY + p.gapH) {
                 gameOver();
                 return;
@@ -1292,10 +1375,11 @@ function render() {
 }
 
 function drawPipe(p) {
-    drawBeam(p.x, 0, PIPE_W, p.gapY);
-    drawBeam(p.x, p.gapY + p.gapH, PIPE_W, H - (p.gapY + p.gapH));
-    drawBeamEdge(p.x, p.gapY, PIPE_W, 'bottom', p.isOscillating);
-    drawBeamEdge(p.x, p.gapY + p.gapH, PIPE_W, 'top', p.isOscillating);
+    const pw = p.w || PIPE_W;
+    drawBeam(p.x, 0, pw, p.gapY);
+    drawBeam(p.x, p.gapY + p.gapH, pw, H - (p.gapY + p.gapH));
+    drawBeamEdge(p.x, p.gapY, pw, 'bottom', p.isOscillating);
+    drawBeamEdge(p.x, p.gapY + p.gapH, pw, 'top', p.isOscillating);
 }
 
 function drawBeam(x, y, w, h) {
@@ -1361,17 +1445,47 @@ function drawPlayer() {
 // ----------------------------------------------------
 // USER INPUT & EVENT HANDLERS
 // ----------------------------------------------------
+let lastJumpTime = 0;
+const JUMP_DEBOUNCE = 80;
+
+function handleJump() {
+    const now = performance.now();
+    if (now - lastJumpTime < JUMP_DEBOUNCE) return;
+    lastJumpTime = now;
+    jump();
+}
+
 document.addEventListener('keydown', e => {
     if (['Space', 'ArrowUp', 'KeyW'].includes(e.code)) {
         e.preventDefault();
-        jump();
+        handleJump();
     }
 });
 
+let touchActive = false;
 document.getElementById('game-wrap').addEventListener('pointerdown', e => {
     if (e.target.closest('button') || e.target.closest('a')) return;
-    jump();
+    e.preventDefault();
+    touchActive = true;
+    handleJump();
+});
+
+document.getElementById('game-wrap').addEventListener('pointerup', () => {
+    touchActive = false;
 }, { passive: true });
+
+document.getElementById('game-wrap').addEventListener('pointercancel', () => {
+    touchActive = false;
+}, { passive: true });
+
+// Prevent iOS double-tap zoom and pull-to-refresh
+document.addEventListener('touchstart', e => {
+    if (e.touches.length > 1) return;
+}, { passive: true });
+
+// Prevent pinch zoom
+document.addEventListener('gesturestart', e => { e.preventDefault(); }, { passive: false });
+document.addEventListener('gesturechange', e => { e.preventDefault(); }, { passive: false });
 
 // ----------------------------------------------------
 // PROMO DISCOUNT CLAIM & SOCIAL SHARING
