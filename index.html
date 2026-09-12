@@ -1223,6 +1223,40 @@
         }
 
         /* ==========================================================================
+           LANG TOGGLE BUTTON
+           ========================================================================== */
+        .lang-toggle {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 48px;
+            height: 48px;
+            background: rgba(12, 15, 20, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            z-index: 9998;
+            transition: all 0.25s ease;
+            letter-spacing: 0.05em;
+        }
+        .lang-toggle:hover {
+            background: var(--cx-red-primary);
+            border-color: var(--cx-red-primary);
+            transform: scale(1.08);
+        }
+        @media (max-width: 768px) {
+            .lang-toggle { bottom: 16px; left: 16px; width: 42px; height: 42px; font-size: 12px; }
+        }
+
+        /* ==========================================================================
            12. MOBILE NAVIGATION OVERLAY
            ========================================================================== */
         .mobile-nav-overlay {
@@ -1864,7 +1898,7 @@
                     <text x="98" y="60" font-family="'Montserrat', sans-serif" font-weight="600" font-size="14.5" fill="#FFFFFF" letter-spacing="0.32em">MONTREAL</text>
                 </svg>
             </div>
-            <div class="loader-status-text">POWERING QUEBEC'S GAMERS</div>
+            <div class="loader-status-text" data-i18n="preloader_text">POWERING QUEBEC'S GAMERS</div>
             <div class="loader-bar-wrap">
                 <div class="loader-bar-track">
                     <div class="loader-bar-fill" id="loaderBarFill"></div>
@@ -1896,18 +1930,18 @@
 
             <nav>
                 <ul class="nav-links">
-                    <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#catalog" class="nav-link">Builders</a></li>
-                    <li><a href="#services" class="nav-link">Services</a></li>
-                    <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#reviews" class="nav-link">Reviews</a></li>
-                    <li><a href="#faq" class="nav-link">FAQ</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="#home" class="nav-link active" data-i18n="nav_home">Home</a></li>
+                    <li><a href="#catalog" class="nav-link" data-i18n="nav_builders">Builders</a></li>
+                    <li><a href="#services" class="nav-link" data-i18n="nav_services">Services</a></li>
+                    <li><a href="#about" class="nav-link" data-i18n="nav_about">About</a></li>
+                    <li><a href="#reviews" class="nav-link" data-i18n="nav_reviews">Reviews</a></li>
+                    <li><a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a></li>
+                    <li><a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a></li>
                 </ul>
             </nav>
 
             <div>
-                <a href="#contact" class="btn-header">Contact Us</a>
+                <a href="#contact" class="btn-header" data-i18n="nav_contact_us">Contact Us</a>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileNav()" aria-label="Toggle Menu">
                     <div class="hamburger"><span></span><span></span><span></span></div>
                 </button>
@@ -1921,8 +1955,8 @@
     <section class="hero-section" id="home">
         <div class="container">
             <div class="hero-header">
-                <h1 class="hero-title">BUILD YOUR ULTIMATE RIG IN MONTREAL</h1>
-                <p class="hero-subtitle">CoreX: Powering Quebec's Gamers.</p>
+                <h1 class="hero-title" data-i18n="hero_title">BUILD YOUR ULTIMATE RIG IN MONTREAL</h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">CoreX: Powering Quebec's Gamers.</p>
             </div>
 
             <div class="hero-showcase">
@@ -1941,10 +1975,10 @@
                         <img src="assets/items/3080_5700X_no_bg.png" alt="CoreX Ultra 3080">
                     </div>
                     <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                        <a href="#catalog" class="btn-hero-action" onclick="event.stopPropagation();"><span>EXPLORE STORE BUILDS</span></a>
-                        <a href="game/index.html" class="btn-hero-action" style="background: transparent; border: 2px solid var(--cx-red-primary);" onclick="event.stopPropagation();"><span>🎮 PLAY COREX RUN</span></a>
+                        <a href="#catalog" class="btn-hero-action" onclick="event.stopPropagation();"><span data-i18n="hero_explore">EXPLORE STORE BUILDS</span></a>
+                        <a href="game/index.html" class="btn-hero-action" style="background: transparent; border: 2px solid var(--cx-red-primary);" onclick="event.stopPropagation();"><span data-i18n="hero_play">🎮 PLAY COREX RUN</span></a>
                     </div>
-                    <div style="font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 0.06em; margin-top: 8px; text-shadow: 0 0 10px rgba(255,215,0,0.4); text-transform: uppercase;">
+                    <div style="font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 0.06em; margin-top: 8px; text-shadow: 0 0 10px rgba(255,215,0,0.4); text-transform: uppercase;" data-i18n="hero_play_save">
                         ⚡ PLAY TO SAVE: Every 10 points is $1 off a gaming computer purchase (max CAD$50)
                     </div>
                 </div>
@@ -1967,9 +2001,9 @@
     <section class="section-wrap" id="catalog">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">HARDWARE CONFIGURATIONS</span>
-                <h2 class="section-title">FEATURED CUSTOM RIGS</h2>
-                <p class="section-desc">Hand-assembled, thermally stressed, and calibrated in Montreal. Select a build to view full technical specifications or contact us immediately.</p>
+                <span class="section-tag" data-i18n="catalog_tag">HARDWARE CONFIGURATIONS</span>
+                <h2 class="section-title" data-i18n="catalog_title">FEATURED CUSTOM RIGS</h2>
+                <p class="section-desc" data-i18n="catalog_desc">Hand-assembled, thermally stressed, and calibrated in Montreal. Select a build to view full technical specifications or contact us immediately.</p>
             </div>
 
             <div class="product-grid">
@@ -1988,10 +2022,10 @@
                     <div class="card-price">$1,299 CAD</div>
                     <div class="card-actions">
                         <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openBuildModal(0)">
-                            <span>VIEW SPECS</span>
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
                         </button>
                         <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('CORE X TITAN 4060 TI ($1,299 CAD)')">
-                            <span>ORDER</span>
+                            <span data-i18n="btn_order">ORDER</span>
                         </button>
                     </div>
                 </div>
@@ -2010,10 +2044,10 @@
                     <div class="card-price">$1,249 CAD</div>
                     <div class="card-actions">
                         <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openBuildModal(1)">
-                            <span>VIEW SPECS</span>
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
                         </button>
                         <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('CORE X APEX 4060 ($1,249 CAD)')">
-                            <span>ORDER</span>
+                            <span data-i18n="btn_order">ORDER</span>
                         </button>
                     </div>
                 </div>
@@ -2032,10 +2066,10 @@
                     <div class="card-price">$1,549 CAD</div>
                     <div class="card-actions">
                         <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openBuildModal(2)">
-                            <span>VIEW SPECS</span>
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
                         </button>
                         <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('CORE X ULTRA 3080 ($1,549 CAD)')">
-                            <span>ORDER</span>
+                            <span data-i18n="btn_order">ORDER</span>
                         </button>
                     </div>
                 </div>
@@ -2054,10 +2088,10 @@
                     <div class="card-price">$1,199 CAD</div>
                     <div class="card-actions">
                         <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openBuildModal(3)">
-                            <span>VIEW SPECS</span>
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
                         </button>
                         <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('CORE X STEALTH 3070 ($1,199 CAD)')">
-                            <span>ORDER</span>
+                            <span data-i18n="btn_order">ORDER</span>
                         </button>
                     </div>
                 </div>
@@ -2076,10 +2110,10 @@
                     <div class="card-price">$849 CAD</div>
                     <div class="card-actions">
                         <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openBuildModal(4)">
-                            <span>VIEW SPECS</span>
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
                         </button>
                         <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('CORE X PULSE 5700 XT ($849 CAD)')">
-                            <span>ORDER</span>
+                            <span data-i18n="btn_order">ORDER</span>
                         </button>
                     </div>
                 </div>
@@ -2098,10 +2132,10 @@
                     <div class="card-price">$899 CAD</div>
                     <div class="card-actions">
                         <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openBuildModal(5)">
-                            <span>VIEW SPECS</span>
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
                         </button>
                         <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('CORE X PHANTOM 5700 XT ($899 CAD)')">
-                            <span>ORDER</span>
+                            <span data-i18n="btn_order">ORDER</span>
                         </button>
                     </div>
                 </div>
@@ -2116,9 +2150,9 @@
     <section class="section-wrap services-section" id="services">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">MONTREAL WORKSHOP CAPABILITIES</span>
-                <h2 class="section-title">OUR SERVICES & EXPERTISE</h2>
-                <p class="section-desc">From surgical custom PC builds to delicate chip repasting and data recovery — all executed in Montreal.</p>
+                <span class="section-tag" data-i18n="services_tag">MONTREAL WORKSHOP CAPABILITIES</span>
+                <h2 class="section-title" data-i18n="services_title">OUR SERVICES & EXPERTISE</h2>
+                <p class="section-desc" data-i18n="services_desc">From surgical custom PC builds to delicate chip repasting and data recovery — all executed in Montreal.</p>
             </div>
 
             <div class="services-grid">
@@ -2126,91 +2160,91 @@
                 <!-- 1. Custom PC Build -->
                 <div class="service-card">
                     <div class="service-icon-wrap">⚙️</div>
-                    <h3 class="service-title">Custom PC Build</h3>
-                    <div class="service-price">Starting at $80 labor</div>
-                    <p class="service-desc">Complete professional hardware assembly with surgical cable management, optimal fan positive pressure, and BIOS validation.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Custom PC Build')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_custom_build">Custom PC Build</h3>
+                    <div class="service-price" data-i18n="svc_price_custom">Starting at $80 labor</div>
+                    <p class="service-desc" data-i18n="svc_custom_build_desc">Complete professional hardware assembly with surgical cable management, optimal fan positive pressure, and BIOS validation.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Custom PC Build')" data-i18n="btn_inquire"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 2. Windows Installation with Drivers -->
                 <div class="service-card">
                     <div class="service-icon-wrap">💿</div>
-                    <h3 class="service-title">Windows Install & Drivers</h3>
-                    <div class="service-price">Starting at $50</div>
-                    <p class="service-desc">Clean, unbloated Windows 11/10 installation. Latest stable chipset, GPU, audio, and network drivers configured.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Windows Installation with Drivers')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_windows">Windows Install & Drivers</h3>
+                    <div class="service-price" data-i18n="svc_price_windows">Starting at $50</div>
+                    <p class="service-desc" data-i18n="svc_windows_desc">Clean, unbloated Windows 11/10 installation. Latest stable chipset, GPU, audio, and network drivers configured.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Windows Installation with Drivers')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 3. CPU Repasting -->
                 <div class="service-card">
                     <div class="service-icon-wrap">🌡️</div>
-                    <h3 class="service-title">CPU Repasting</h3>
-                    <div class="service-price">Starting at $40</div>
-                    <p class="service-desc">Complete thermal cleanup and re-application of premium high-conductivity thermal paste (Thermal Grizzly / Arctic MX-6) to drop core temps.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: CPU Repasting')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_cpu_repaste">CPU Repasting</h3>
+                    <div class="service-price" data-i18n="svc_price_cpu">Starting at $40</div>
+                    <p class="service-desc" data-i18n="svc_cpu_repaste_desc">Complete thermal cleanup and re-application of premium high-conductivity thermal paste (Thermal Grizzly / Arctic MX-6) to drop core temps.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: CPU Repasting')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 4. GPU Repasting -->
                 <div class="service-card">
                     <div class="service-icon-wrap">🎮</div>
-                    <h3 class="service-title">GPU Repasting</h3>
-                    <div class="service-price">Starting at $60</div>
-                    <p class="service-desc">Precision graphics card disassembly, old compound removal, hotspot thermal paste renewal, and high-performance VRAM thermal pad replacement.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: GPU Repasting')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_gpu_repaste">GPU Repasting</h3>
+                    <div class="service-price" data-i18n="svc_price_gpu">Starting at $60</div>
+                    <p class="service-desc" data-i18n="svc_gpu_repaste_desc">Precision graphics card disassembly, old compound removal, hotspot thermal paste renewal, and high-performance VRAM thermal pad replacement.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: GPU Repasting')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 5. Computer Cleaning -->
                 <div class="service-card">
                     <div class="service-icon-wrap">💨</div>
-                    <h3 class="service-title">Computer Cleaning</h3>
-                    <div class="service-price">Starting at $45</div>
-                    <p class="service-desc">Deep anti-static decontamination of radiators, fan blades, heatsinks, mesh filters, and chassis interior to restore quiet airflow.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Computer Cleaning')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_cleaning">Computer Cleaning</h3>
+                    <div class="service-price" data-i18n="svc_price_clean">Starting at $45</div>
+                    <p class="service-desc" data-i18n="svc_cleaning_desc">Deep anti-static decontamination of radiators, fan blades, heatsinks, mesh filters, and chassis interior to restore quiet airflow.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Computer Cleaning')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 6. Case Swapping -->
                 <div class="service-card">
                     <div class="service-icon-wrap">📦</div>
-                    <h3 class="service-title">Case Swapping</h3>
-                    <div class="service-price">Starting at $70</div>
-                    <p class="service-desc">Migrate all existing hardware into a modern high-airflow or dual-chamber glass chassis with fresh cabling and fan orientation.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Case Swapping')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_case_swap">Case Swapping</h3>
+                    <div class="service-price" data-i18n="svc_price_case">Starting at $70</div>
+                    <p class="service-desc" data-i18n="svc_case_swap_desc">Migrate all existing hardware into a modern high-airflow or dual-chamber glass chassis with fresh cabling and fan orientation.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Case Swapping')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 7. HDD/SSD Data Recovery -->
                 <div class="service-card">
                     <div class="service-icon-wrap">💾</div>
-                    <h3 class="service-title">HDD/SSD Data Recovery</h3>
-                    <div class="service-price">Free Assessment</div>
-                    <p class="service-desc">Emergency recovery for inaccessible drives, failing sectors, or corrupted partitions. Safe migration to high-speed NVMe SSDs.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: HDD/SSD Data Recovery')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_data_recovery">HDD/SSD Data Recovery</h3>
+                    <div class="service-price" data-i18n="svc_price_data">Free Assessment</div>
+                    <p class="service-desc" data-i18n="svc_data_recovery_desc">Emergency recovery for inaccessible drives, failing sectors, or corrupted partitions. Safe migration to high-speed NVMe SSDs.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: HDD/SSD Data Recovery')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 8. Adding Component / Upgrades -->
                 <div class="service-card">
                     <div class="service-icon-wrap">⚡</div>
-                    <h3 class="service-title">Component Upgrades</h3>
-                    <div class="service-price">Starting at $30</div>
-                    <p class="service-desc">GPU swaps, RAM capacity doubling, NVMe storage expansions, and modular power supply upgrades with bottleneck verification.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Component Upgrades')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_upgrades">Component Upgrades</h3>
+                    <div class="service-price" data-i18n="svc_price_upgrade">Starting at $30</div>
+                    <p class="service-desc" data-i18n="svc_upgrades_desc">GPU swaps, RAM capacity doubling, NVMe storage expansions, and modular power supply upgrades with bottleneck verification.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Component Upgrades')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 9. Repairs -->
                 <div class="service-card">
                     <div class="service-icon-wrap">🔧</div>
-                    <h3 class="service-title">Hardware Repairs</h3>
-                    <div class="service-price">Diagnostic from $40</div>
-                    <p class="service-desc">Component-level isolation and replacement for failing motherboards, blown PSUs, dead fans, or broken front-panel I/O headers.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Hardware Repairs')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_repairs">Hardware Repairs</h3>
+                    <div class="service-price" data-i18n="svc_price_repair">Diagnostic from $40</div>
+                    <p class="service-desc" data-i18n="svc_repairs_desc">Component-level isolation and replacement for failing motherboards, blown PSUs, dead fans, or broken front-panel I/O headers.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Hardware Repairs')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
                 <!-- 10. Diagnostics -->
                 <div class="service-card">
                     <div class="service-icon-wrap">🔍</div>
-                    <h3 class="service-title">Diagnostics</h3>
-                    <div class="service-price">Starting at $40</div>
-                    <p class="service-desc">Full bench triage for system crashes, Blue Screens (BSOD), boot loops, black screen output, and intermittent thermal throttling.</p>
-                    <button class="service-btn" onclick="openContactModal('Service: Diagnostics')">Inquire via Chat / Call</button>
+                    <h3 class="service-title" data-i18n="svc_diagnostics">Diagnostics</h3>
+                    <div class="service-price" data-i18n="svc_price_diag">Starting at $40</div>
+                    <p class="service-desc" data-i18n="svc_diagnostics_desc">Full bench triage for system crashes, Blue Screens (BSOD), boot loops, black screen output, and intermittent thermal throttling.</p>
+                    <button class="service-btn" onclick="openContactModal('Service: Diagnostics')"data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
             </div>
@@ -2223,19 +2257,19 @@
     <section class="section-wrap reviews-section" id="reviews">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">WHAT OUR CUSTOMERS SAY</span>
-                <h2 class="section-title">5-STAR RATED ON GOOGLE</h2>
-                <p class="section-desc">Don't take our word for it — hear from real Montreal gamers who trusted CoreX with their rigs.</p>
+                <span class="section-tag" data-i18n="reviews_tag">WHAT OUR CUSTOMERS SAY</span>
+                <h2 class="section-title" data-i18n="reviews_title">5-STAR RATED ON GOOGLE</h2>
+                <p class="section-desc" data-i18n="reviews_desc">Don't take our word for it — hear from real Montreal gamers who trusted CoreX with their rigs.</p>
             </div>
 
             <div class="reviews-grid">
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Best PC shop in Montreal! They built my custom rig with incredible cable management. Runs cool and quiet. Highly recommend for anyone serious about gaming."</p>
+                    <p class="review-text" data-i18n="review1_text">"Best PC shop in Montreal! They built my custom rig with incredible cable management. Runs cool and quiet. Highly recommend for anyone serious about gaming."</p>
                     <div class="review-author">
                         <div class="review-avatar">M</div>
                         <div>
-                            <div class="review-name">Marc-Andre L.</div>
+                            <div class="review-name" data-i18n="review1_name">Marc-Andre L.</div>
                             <div class="review-date">2025</div>
                             <div class="review-source">Google Reviews</div>
                         </div>
@@ -2244,11 +2278,11 @@
 
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Brought in my overheating laptop for GPU repasting. Done same day, temps dropped 20 degrees. Professional service and fair pricing. CoreX is my go-to now."</p>
+                    <p class="review-text" data-i18n="review2_text">"Brought in my overheating laptop for GPU repasting. Done same day, temps dropped 20 degrees. Professional service and fair pricing. CoreX is my go-to now."</p>
                     <div class="review-author">
                         <div class="review-avatar">S</div>
                         <div>
-                            <div class="review-name">Sarah K.</div>
+                            <div class="review-name" data-i18n="review2_name">Sarah K.</div>
                             <div class="review-date">2025</div>
                             <div class="review-source">Google Reviews</div>
                         </div>
@@ -2257,11 +2291,11 @@
 
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"They saved my data from a dying SSD when everyone else said it was impossible. Fast turnaround and they kept me updated the whole time. True experts."</p>
+                    <p class="review-text" data-i18n="review3_text">"They saved my data from a dying SSD when everyone else said it was impossible. Fast turnaround and they kept me updated the whole time. True experts."</p>
                     <div class="review-author">
                         <div class="review-avatar">J</div>
                         <div>
-                            <div class="review-name">Jean-Francois D.</div>
+                            <div class="review-name" data-i18n="review3_name">Jean-Francois D.</div>
                             <div class="review-date">2025</div>
                             <div class="review-source">Google Reviews</div>
                         </div>
@@ -2272,15 +2306,15 @@
             <div class="reviews-stats">
                 <div class="review-stat">
                     <div class="review-stat-num">5.0</div>
-                    <div class="review-stat-label">Google Rating</div>
+                    <div class="review-stat-label" data-i18n="stat_rating">Google Rating</div>
                 </div>
                 <div class="review-stat">
                     <div class="review-stat-num">500+</div>
-                    <div class="review-stat-label">PCs Sold</div>
+                    <div class="review-stat-label" data-i18n="stat_pcs">PCs Sold</div>
                 </div>
                 <div class="review-stat">
                     <div class="review-stat-num">2,000+</div>
-                    <div class="review-stat-label">Happy Clients</div>
+                    <div class="review-stat-label" data-i18n="stat_clients">Happy Clients</div>
                 </div>
                 <div class="review-stat">
                     <div class="review-stat-num">Same Day</div>
@@ -2296,37 +2330,37 @@
     <section class="section-wrap about-section" id="about">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">MONTREAL'S PC WORKSHOP</span>
-                <h2 class="section-title">WHY CHOOSE COREX</h2>
-                <p class="section-desc">We're not a big-box store. We're Montreal gamers building for Montreal gamers — with real expertise and personal service.</p>
+                <span class="section-tag" data-i18n="about_tag">MONTREAL'S PC WORKSHOP</span>
+                <h2 class="section-title" data-i18n="about_title">WHY CHOOSE COREX</h2>
+                <p class="section-desc" data-i18n="about_desc">We're not a big-box store. We're Montreal gamers building for Montreal gamers — with real expertise and personal service.</p>
             </div>
 
             <div class="about-grid">
                 <div class="about-text">
-                    <h3>Built By Gamers, For Gamers</h3>
-                    <p>CoreX Montreal is a specialized PC workshop in the heart of Chabanel. We hand-assemble every custom rig, perform meticulous thermal testing, and ensure each system is tuned for peak performance before it reaches your hands.</p>
-                    <p>Every build comes with a clean Windows 11 install (no bloatware), latest drivers, BIOS optimization, and a 30-day workshop warranty. We stand behind our work.</p>
+                    <h3 data-i18n="about_h3">Built By Gamers, For Gamers</h3>
+                    <p data-i18n="about_p1">CoreX Montreal is a specialized PC workshop in the heart of Chabanel. We hand-assemble every custom rig, perform meticulous thermal testing, and ensure each system is tuned for peak performance before it reaches your hands.</p>
+                    <p data-i18n="about_p2">Every build comes with a clean Windows 11 install (no bloatware), latest drivers, BIOS optimization, and a 30-day workshop warranty. We stand behind our work.</p>
 
                     <div class="about-features">
                         <div class="about-feature">
                             <div class="about-feature-icon">🛡️</div>
-                            <div class="about-feature-title">30-Day Warranty</div>
-                            <div class="about-feature-desc">On all builds and repair services</div>
+                            <div class="about-feature-title" data-i18n="about_f1_title">30-Day Warranty</div>
+                            <div class="about-feature-desc" data-i18n="about_f1_desc">On all builds and repair services</div>
                         </div>
                         <div class="about-feature">
                             <div class="about-feature-icon">🔬</div>
-                            <div class="about-feature-title">Bench-Tested</div>
-                            <div class="about-feature-desc">Thermal & stress validated before pickup</div>
+                            <div class="about-feature-title" data-i18n="about_f2_title">Bench-Tested</div>
+                            <div class="about-feature-desc" data-i18n="about_f2_desc">Thermal & stress validated before pickup</div>
                         </div>
                         <div class="about-feature">
                             <div class="about-feature-icon">⚡</div>
-                            <div class="about-feature-title">Same-Day Service</div>
-                            <div class="about-feature-desc">Most repairs completed same day</div>
+                            <div class="about-feature-title" data-i18n="about_f3_title">Same-Day Service</div>
+                            <div class="about-feature-desc" data-i18n="about_f3_desc">Most repairs completed same day</div>
                         </div>
                         <div class="about-feature">
                             <div class="about-feature-icon">📍</div>
-                            <div class="about-feature-title">In-Person Testing</div>
-                            <div class="about-feature-desc">See your PC running before you buy</div>
+                            <div class="about-feature-title" data-i18n="about_f4_title">In-Person Testing</div>
+                            <div class="about-feature-desc" data-i18n="about_f4_desc">See your PC running before you buy</div>
                         </div>
                     </div>
                 </div>
@@ -2338,15 +2372,15 @@
                     <div class="about-counters">
                         <div class="about-counter">
                             <div class="about-counter-num" data-count="500">0</div>
-                            <div class="about-counter-label">PCs Built & Sold</div>
+                            <div class="about-counter-label" data-i18n="counter_pcs">PCs Built & Sold</div>
                         </div>
                         <div class="about-counter">
                             <div class="about-counter-num" data-count="2000">0</div>
-                            <div class="about-counter-label">Satisfied Clients</div>
+                            <div class="about-counter-label" data-i18n="counter_clients">Satisfied Clients</div>
                         </div>
                         <div class="about-counter">
                             <div class="about-counter-num" data-count="5">0</div>
-                            <div class="about-counter-label">Star Rating</div>
+                            <div class="about-counter-label" data-i18n="counter_rating">Star Rating</div>
                         </div>
                     </div>
                 </div>
@@ -2360,9 +2394,9 @@
     <section class="section-wrap gallery-section" id="gallery">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">OUR WORK SPEAKS</span>
-                <h2 class="section-title">BUILD GALLERY</h2>
-                <p class="section-desc">Cable management artistry, clean builds, and thermal perfection — every rig is a showcase.</p>
+                <span class="section-tag" data-i18n="gallery_tag">OUR WORK SPEAKS</span>
+                <h2 class="section-title" data-i18n="gallery_title">BUILD GALLERY</h2>
+                <p class="section-desc" data-i18n="gallery_desc">Cable management artistry, clean builds, and thermal perfection — every rig is a showcase.</p>
             </div>
 
             <div class="gallery-grid">
@@ -2408,9 +2442,9 @@
     <section class="section-wrap comparison-section" id="compare">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">SIDE BY SIDE</span>
-                <h2 class="section-title">COMPARE OUR BUILDS</h2>
-                <p class="section-desc">Not sure which build is right for you? Compare specs at a glance to find your perfect rig.</p>
+                <span class="section-tag" data-i18n="compare_tag">SIDE BY SIDE</span>
+                <h2 class="section-title" data-i18n="compare_title">COMPARE OUR BUILDS</h2>
+                <p class="section-desc" data-i18n="compare_desc">Not sure which build is right for you? Compare specs at a glance to find your perfect rig.</p>
             </div>
 
             <div class="comparison-wrap">
@@ -2502,73 +2536,73 @@
     <section class="section-wrap faq-section" id="faq">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">GOT QUESTIONS?</span>
-                <h2 class="section-title">FREQUENTLY ASKED</h2>
-                <p class="section-desc">Everything you need to know before visiting our Montreal workshop.</p>
+                <span class="section-tag" data-i18n="faq_tag">GOT QUESTIONS?</span>
+                <h2 class="section-title" data-i18n="faq_title">FREQUENTLY ASKED</h2>
+                <p class="section-desc" data-i18n="faq_desc">Everything you need to know before visiting our Montreal workshop.</p>
             </div>
 
             <div class="faq-list">
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>Do you offer delivery or is it pickup only?</span>
+                        <span data-i18n="faq_q1">Do you offer delivery or is it pickup only?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Currently we operate on an in-person pickup model from our Montreal workshop at 111 rue Chabanel Ouest, Suite 414. This allows you to see your PC running, test it in person, and take it home the same day. We can discuss delivery options for special cases via WhatsApp.</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a1">Currently we operate on an in-person pickup model from our Montreal workshop at 111 rue Chabanel Ouest, Suite 414. This allows you to see your PC running, test it in person, and take it home the same day. We can discuss delivery options for special cases via WhatsApp.</div>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>What is your warranty policy?</span>
+                        <span data-i18n="faq_q2">What is your warranty policy?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">All custom builds come with a 30-day workshop warranty covering hardware defects and assembly issues. We also honor manufacturer warranties on all individual components (typically 3 years for GPUs, 3-5 years for PSUs). Repair services include a 14-day service guarantee.</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a2">All custom builds come with a 30-day workshop warranty covering hardware defects and assembly issues. We also honor manufacturer warranties on all individual components (typically 3 years for GPUs, 3-5 years for PSUs). Repair services include a 14-day service guarantee.</div>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>How long does a typical build or repair take?</span>
+                        <span data-i18n="faq_q3">How long does a typical build or repair take?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Most custom PC builds are completed within 1-2 business days. Simple services like cleaning, repasting, and diagnostics are often done same-day. Complex repairs may take 2-3 days depending on parts availability. We'll keep you updated via WhatsApp throughout the process.</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a3">Most custom PC builds are completed within 1-2 business days. Simple services like cleaning, repasting, and diagnostics are often done same-day. Complex repairs may take 2-3 days depending on parts availability. We'll keep you updated via WhatsApp throughout the process.</div>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>Do you offer financing or payment plans?</span>
+                        <span data-i18n="faq_q4">Do you offer financing or payment plans?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">We accept cash, e-transfer, and debit at our workshop. For builds over $1,000 CAD, we can arrange a deposit-and-balance payment structure. Contact us via WhatsApp to discuss options that work for your budget.</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a4">We accept cash and e-transfer at our workshop. For builds over $1,000 CAD, we can arrange a deposit-and-balance payment structure. Contact us via WhatsApp to discuss options that work for your budget.</div>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>Can I trade in my old PC or components?</span>
+                        <span data-i18n="faq_q5">Can I trade in my old PC or components?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Yes! We accept trade-ins on working components and full systems. The value will be applied as credit toward your new build or service. Contact us with photos of your current hardware for a quick estimate.</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a5">Yes! We accept trade-ins on working components and full systems. The value will be applied as credit toward your new build or service. Contact us with photos of your current hardware for a quick estimate.</div>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>How does the CoreX Run game discount work?</span>
+                        <span data-i18n="faq_q6">How does the CoreX Run game discount work?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Play our browser game "CoreX Run" and earn real discounts! Every 10 points scored equals $1 CAD off any gaming computer purchase, up to $50 CAD maximum. Just mention your score when contacting us or claim it through the game's share feature. It's our way of making PC shopping fun!</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a6">Play our browser game "CoreX Run" and earn real discounts! Every 10 points scored equals $1 CAD off any gaming computer purchase, up to $50 CAD maximum. Just mention your score when contacting us or claim it through the game's share feature. It's our way of making PC shopping fun!</div>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>What areas of Montreal do you serve?</span>
+                        <span data-i18n="faq_q7">What areas of Montreal do you serve?</span>
                         <span class="faq-arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Our workshop is located in the Chabanel neighborhood (Ahuntsic-Cartierville area), easily accessible from all parts of Montreal and surrounding areas including Laval, Longueuil, and the West Island. We serve all of Greater Montreal and Quebec.</div>
+                        <div class="faq-answer-inner" data-i18n="faq_a7">Our workshop is located in the Chabanel neighborhood (Ahuntsic-Cartierville area), easily accessible from all parts of Montreal and surrounding areas including Laval, Longueuil, and the West Island. We serve all of Greater Montreal and Quebec.</div>
                     </div>
                 </div>
             </div>
@@ -2581,17 +2615,17 @@
     <section class="section-wrap booking-section" id="booking">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">SCHEDULE YOUR VISIT</span>
-                <h2 class="section-title">BOOK AN APPOINTMENT</h2>
-                <p class="section-desc">Walk-ins are welcome, but booking ensures a technician is ready for you.</p>
+                <span class="section-tag" data-i18n="booking_tag">SCHEDULE YOUR VISIT</span>
+                <h2 class="section-title" data-i18n="booking_title">BOOK AN APPOINTMENT</h2>
+                <p class="section-desc" data-i18n="booking_desc">Walk-ins are welcome, but booking ensures a technician is ready for you.</p>
             </div>
 
             <div class="booking-box">
-                <h3>Ready to Get Started?</h3>
-                <p>Contact us to schedule a consultation, discuss a custom build, or book a repair service. We respond fast on WhatsApp.</p>
+                <h3 data-i18n="booking_h3">Ready to Get Started?</h3>
+                <p data-i18n="booking_p">Contact us to schedule a consultation, discuss a custom build, or book a repair service. We respond fast on WhatsApp.</p>
                 <div class="booking-options">
-                    <a href="https://wa.me/14505180296?text=Hello%20CoreX%20Montreal,%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="booking-option btn-wa">💬 Book via WhatsApp</a>
-                    <a href="tel:14505180296" class="booking-option btn-call">📞 Call to Schedule</a>
+                    <a href="https://wa.me/14505180296?text=Hello%20CoreX%20Montreal,%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="booking-option btn-wa" data-i18n="booking_whatsapp">💬 Book via WhatsApp</a>
+                    <a href="tel:14505180296" class="booking-option btn-call" data-i18n="booking_call">📞 Call to Schedule</a>
                 </div>
             </div>
         </div>
@@ -2603,9 +2637,9 @@
     <section class="section-wrap blog-section" id="blog">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">LATEST FROM COREX</span>
-                <h2 class="section-title">NEWS & DEALS</h2>
-                <p class="section-desc">PC building tips, hardware news, and exclusive promotions from our Montreal workshop.</p>
+                <span class="section-tag" data-i18n="blog_tag">LATEST FROM COREX</span>
+                <h2 class="section-title" data-i18n="blog_title">NEWS & DEALS</h2>
+                <p class="section-desc" data-i18n="blog_desc">PC building tips, hardware news, and exclusive promotions from our Montreal workshop.</p>
             </div>
 
             <div class="blog-grid">
@@ -2616,8 +2650,8 @@
                     </div>
                     <div class="blog-body">
                         <div class="blog-date">2026</div>
-                        <h3 class="blog-title">Play CoreX Run — Earn Up to $50 Off</h3>
-                        <p class="blog-excerpt">Our browser game rewards real discounts. Every 10 points = $1 off any gaming PC purchase. How high can you score?</p>
+                        <h3 class="blog-title" data-i18n="blog1_title">Play CoreX Run — Earn Up to $50 Off</h3>
+                        <p class="blog-excerpt" data-i18n="blog1_excerpt">Our browser game rewards real discounts. Every 10 points = $1 off any gaming PC purchase. How high can you score?</p>
                     </div>
                 </div>
                 <div class="blog-card">
@@ -2627,8 +2661,8 @@
                     </div>
                     <div class="blog-body">
                         <div class="blog-date">2026</div>
-                        <h3 class="blog-title">When Should You Repaste Your GPU?</h3>
-                        <p class="blog-excerpt">Signs your graphics card needs thermal maintenance: high temps, thermal throttling, and fan noise. We break it down.</p>
+                        <h3 class="blog-title" data-i18n="blog2_title">When Should You Repaste Your GPU?</h3>
+                        <p class="blog-excerpt" data-i18n="blog2_excerpt">Signs your graphics card needs thermal maintenance: high temps, thermal throttling, and fan noise. We break it down.</p>
                     </div>
                 </div>
                 <div class="blog-card">
@@ -2638,8 +2672,8 @@
                     </div>
                     <div class="blog-body">
                         <div class="blog-date">2026</div>
-                        <h3 class="blog-title">RTX 50 Series — What to Expect</h3>
-                        <p class="blog-excerpt">NVIDIA's next-gen GPUs are coming. Here's what Montreal gamers should know about pricing, availability, and performance.</p>
+                        <h3 class="blog-title" data-i18n="blog3_title">RTX 50 Series — What to Expect</h3>
+                        <p class="blog-excerpt" data-i18n="blog3_excerpt">NVIDIA's next-gen GPUs are coming. Here's what Montreal gamers should know about pricing, availability, and performance.</p>
                     </div>
                 </div>
             </div>
@@ -2652,9 +2686,9 @@
     <section class="section-wrap" id="contact">
         <div class="container">
             <div class="section-heading-area">
-                <span class="section-tag">MONTREAL DIRECT ACCESS</span>
-                <h2 class="section-title">CONNECT WITH COREX MONTREAL</h2>
-                <p class="section-desc">Reach out directly via your preferred platform to discuss a custom build, service, or reserve any PC in our catalog.</p>
+                <span class="section-tag" data-i18n="contact_tag">MONTREAL DIRECT ACCESS</span>
+                <h2 class="section-title" data-i18n="contact_title">CONNECT WITH COREX MONTREAL</h2>
+                <p class="section-desc" data-i18n="contact_desc">Reach out directly via your preferred platform to discuss a custom build, service, or reserve any PC in our catalog.</p>
             </div>
 
             <div class="channels-grid">
@@ -2662,36 +2696,36 @@
                 <!-- WhatsApp -->
                 <a href="https://wa.me/14505180296?text=Hello%20CoreX%20Montreal,%20I%20am%20interested%20in%20a%20custom%20build%20/%20service." target="_blank" rel="noopener" class="channel-card">
                     <div class="channel-icon icon-wa">💬</div>
-                    <div class="channel-name">WhatsApp</div>
-                    <div class="channel-detail">Fast Direct Message</div>
+                    <div class="channel-name" data-i18n="ch_whatsapp">WhatsApp</div>
+                    <div class="channel-detail" data-i18n="ch_whatsapp_detail">Fast Direct Message</div>
                 </a>
 
                 <!-- Facebook Messenger -->
                 <a href="https://www.facebook.com/profile.php?id=61593953522519&sk=followers" target="_blank" rel="noopener" class="channel-card">
                     <div class="channel-icon icon-fb">📘</div>
-                    <div class="channel-name">Facebook</div>
-                    <div class="channel-detail">Messenger Chat</div>
+                    <div class="channel-name" data-i18n="ch_facebook">Facebook</div>
+                    <div class="channel-detail" data-i18n="ch_facebook_detail">Messenger Chat</div>
                 </a>
 
                 <!-- Instagram -->
                 <a href="https://www.instagram.com/corexmontreal/" target="_blank" rel="noopener" class="channel-card">
                     <div class="channel-icon icon-ig">📸</div>
-                    <div class="channel-name">Instagram</div>
-                    <div class="channel-detail">@corexmontreal</div>
+                    <div class="channel-name" data-i18n="ch_instagram">Instagram</div>
+                    <div class="channel-detail" data-i18n="ch_instagram_detail">@corexmontreal</div>
                 </a>
 
                 <!-- Text Message (SMS) -->
                 <a href="sms:14505180296?&body=Hello%20CoreX%20Montreal,%20I%20would%20like%20to%20inquire%20about:" class="channel-card">
                     <div class="channel-icon icon-sms">📱</div>
-                    <div class="channel-name">Text Message</div>
-                    <div class="channel-detail">Direct SMS to Workshop</div>
+                    <div class="channel-name" data-i18n="ch_sms">Text Message</div>
+                    <div class="channel-detail" data-i18n="ch_sms_detail">Direct SMS to Workshop</div>
                 </a>
 
                 <!-- Phone Call -->
                 <a href="tel:14505180296" class="channel-card">
                     <div class="channel-icon icon-phone">📞</div>
-                    <div class="channel-name">Phone Call</div>
-                    <div class="channel-detail">450-518-0296</div>
+                    <div class="channel-name" data-i18n="ch_phone">Phone Call</div>
+                    <div class="channel-detail" data-i18n="ch_phone_detail">450-518-0296</div>
                 </a>
 
             </div>
@@ -2714,13 +2748,13 @@
                         <text x="96" y="42" font-family="'Montserrat', sans-serif" font-weight="900" font-size="38" fill="#FFFFFF" letter-spacing="0.04em">COREX</text>
                         <text x="98" y="60" font-family="'Montserrat', sans-serif" font-weight="600" font-size="14.5" fill="#FFFFFF" letter-spacing="0.32em">MONTREAL</text>
                     </svg>
-                    <p class="footer-note" style="margin-top: 12px;">
+                    <p class="footer-note" style="margin-top: 12px;" data-i18n="footer_note">
                         Montreal's premier custom PC engineering, hardware triage, thermal repasting, and component upgrade workshop.
                     </p>
                 </div>
                 <div style="font-size:13px; color:var(--cx-text-gray); line-height: 1.8;">
                     <strong>Workshop Location:</strong> 111 rue Chabanel Ouest, Suite 414, Montreal, Quebec<br>
-                    <strong>Hours:</strong> Appointments only for now<br>
+                    <strong>Hours:</strong> <span data-i18n="footer_hours_val">Appointments only for now</span><br>
                     <strong>Direct Hotline:</strong> 450-518-0296<br>
                     <strong>Reviews:</strong> <span style="color: #fbbc04;">★★★★★</span> Perfect 5-Star Rated on Google Maps
                     <div style="margin-top: 10px;">
@@ -2794,7 +2828,7 @@
                         </tbody>
                     </table>
 
-                    <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #fff; margin: 16px 0 8px 0; letter-spacing: 0.05em;">
+                    <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #fff; margin: 16px 0 8px 0; letter-spacing: 0.05em;" data-i18n="modal_order_title">
                         CONTACT DIRECTLY TO ORDER OR RESERVE:
                     </div>
 
@@ -2816,8 +2850,8 @@
         <div class="modal-box">
             <button class="modal-close-btn" onclick="closeModal('contactModal')">&times;</button>
             <span class="section-tag">DIRECT MONTREAL CONTACT</span>
-            <h3 class="modal-item-title" id="contactSubjectTitle">INQUIRE ABOUT BUILD</h3>
-            <p style="font-size: 14px; color: var(--cx-text-gray); margin-bottom: 20px;">
+            <h3 class="modal-item-title" id="contactSubjectTitle" data-i18n="contact_subject">INQUIRE ABOUT BUILD</h3>
+            <p style="font-size: 14px; color: var(--cx-text-gray); margin-bottom: 20px;" data-i18n="contact_choose">
                 Choose your preferred channel to connect with our Montreal workshop technician:
             </p>
 
@@ -2828,17 +2862,22 @@
                 <a href="tel:14505180296" class="modal-contact-btn btn-call">📞 Call 450-518-0296</a>
             </div>
 
-            <p style="font-size: 12px; color: var(--cx-text-muted); margin-top: 20px; text-align: center;">
+            <p style="font-size: 12px; color: var(--cx-text-muted); margin-top: 20px; text-align: center;" data-i18n="contact_fast">
                 Fast response times. Direct communication with our Montreal build specialists.
             </p>
         </div>
     </div>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/14505180296?text=Hello%20CoreX%20Montreal,%20I%20am%20interested%20in%20a%20custom%20build%20/%20service." target="_blank" rel="noopener" class="floating-wa" title="Chat on WhatsApp">💬</a>
+    <a href="https://wa.me/14505180296?text=Hello%20CoreX%20Montreal,%20I%20am%20interested%20in%20a%20custom%20build%20/%20service." target="_blank" rel="noopener" class="floating-wa" title="Chat on WhatsApp" id="floatingWa">💬</a>
 
     <!-- Back to Top Button -->
     <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to Top">↑</button>
+
+    <!-- Language Toggle -->
+    <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()" title="Switch Language">
+        <span id="langLabel">FR</span>
+    </button>
 
     <!-- Mobile Nav Overlay -->
     <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileNav()"></div>
@@ -2862,6 +2901,252 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script>
         const PHONE_NUMBER = "14505180296";
+
+        // ============================================================
+        // INTERNATIONALIZATION (EN/FR)
+        // ============================================================
+        const translations = {
+            en: {
+                preloader_text: "POWERING QUEBEC'S GAMERS",
+                nav_home: "Home", nav_builders: "Builders", nav_services: "Services",
+                nav_about: "About", nav_reviews: "Reviews", nav_faq: "FAQ",
+                nav_contact: "Contact", nav_contact_us: "Contact Us",
+                hero_title: "BUILD YOUR ULTIMATE RIG IN MONTREAL",
+                hero_subtitle: "CoreX: Powering Quebec's Gamers.",
+                hero_explore: "EXPLORE STORE BUILDS", hero_play: "🎮 PLAY COREX RUN",
+                hero_play_save: "⚡ PLAY TO SAVE: Every 10 points is $1 off a gaming computer purchase (max CAD$50)",
+                catalog_tag: "HARDWARE CONFIGURATIONS", catalog_title: "FEATURED CUSTOM RIGS",
+                catalog_desc: "Hand-assembled, thermally stressed, and calibrated in Montreal. Select a build to view full technical specifications or contact us immediately.",
+                btn_view_specs: "VIEW SPECS", btn_order: "ORDER",
+                services_tag: "MONTREAL WORKSHOP CAPABILITIES", services_title: "OUR SERVICES & EXPERTISE",
+                services_desc: "From surgical custom PC builds to delicate chip repasting and data recovery — all executed in Montreal.",
+                svc_custom_build: "Custom PC Build", svc_windows: "Windows Install & Drivers",
+                svc_cpu_repaste: "CPU Repasting", svc_gpu_repaste: "GPU Repasting",
+                svc_cleaning: "Computer Cleaning", svc_case_swap: "Case Swapping",
+                svc_data_recovery: "HDD/SSD Data Recovery", svc_upgrades: "Component Upgrades",
+                svc_repairs: "Hardware Repairs", svc_diagnostics: "Diagnostics",
+                svc_custom_build_desc: "Complete professional hardware assembly with surgical cable management, optimal fan positive pressure, and BIOS validation.",
+                svc_windows_desc: "Clean, unbloated Windows 11/10 installation. Latest stable chipset, GPU, audio, and network drivers configured.",
+                svc_cpu_repaste_desc: "Complete thermal cleanup and re-application of premium high-conductivity thermal paste (Thermal Grizzly / Arctic MX-6) to drop core temps.",
+                svc_gpu_repaste_desc: "Precision graphics card disassembly, old compound removal, hotspot thermal paste renewal, and high-performance VRAM thermal pad replacement.",
+                svc_cleaning_desc: "Deep anti-static decontamination of radiators, fan blades, heatsinks, mesh filters, and chassis interior to restore quiet airflow.",
+                svc_case_swap_desc: "Migrate all existing hardware into a modern high-airflow or dual-chamber glass chassis with fresh cabling and fan orientation.",
+                svc_data_recovery_desc: "Emergency recovery for inaccessible drives, failing sectors, or corrupted partitions. Safe migration to high-speed NVMe SSDs.",
+                svc_upgrades_desc: "GPU swaps, RAM capacity doubling, NVMe storage expansions, and modular power supply upgrades with bottleneck verification.",
+                svc_repairs_desc: "Component-level isolation and replacement for failing motherboards, blown PSUs, dead fans, or broken front-panel I/O headers.",
+                svc_diagnostics_desc: "Full bench triage for system crashes, Blue Screens (BSOD), boot loops, black screen output, and intermittent thermal throttling.",
+                svc_price_custom: "Starting at $80 labor", svc_price_windows: "Starting at $50",
+                svc_price_cpu: "Starting at $40", svc_price_gpu: "Starting at $60",
+                svc_price_clean: "Starting at $45", svc_price_case: "Starting at $70",
+                svc_price_data: "Free Assessment", svc_price_upgrade: "Starting at $30",
+                svc_price_repair: "Diagnostic from $40", svc_price_diag: "Starting at $40",
+                btn_inquire: "Inquire via Chat / Call",
+                reviews_tag: "WHAT OUR CUSTOMERS SAY", reviews_title: "5-STAR RATED ON GOOGLE",
+                reviews_desc: "Don't take our word for it — hear from real Montreal gamers who trusted CoreX with their rigs.",
+                review1_text: '"Best PC shop in Montreal! They built my custom rig with incredible cable management. Runs cool and quiet. Highly recommend for anyone serious about gaming."',
+                review2_text: '"Brought in my overheating laptop for GPU repasting. Done same day, temps dropped 20 degrees. Professional service and fair pricing. CoreX is my go-to now."',
+                review3_text: '"They saved my data from a dying SSD when everyone else said it was impossible. Fast turnaround and they kept me updated the whole time. True experts."',
+                review1_name: "Marc-Andre L.", review2_name: "Sarah K.", review3_name: "Jean-Francois D.",
+                stat_rating: "Google Rating", stat_pcs: "PCs Sold", stat_clients: "Happy Clients", stat_repair: "Most Repairs",
+                about_tag: "MONTREAL'S PC WORKSHOP", about_title: "WHY CHOOSE COREX",
+                about_desc: "We're not a big-box store. We're Montreal gamers building for Montreal gamers — with real expertise and personal service.",
+                about_h3: "Built By Gamers, For Gamers",
+                about_p1: "CoreX Montreal is a specialized PC workshop in the heart of Chabanel. We hand-assemble every custom rig, perform meticulous thermal testing, and ensure each system is tuned for peak performance before it reaches your hands.",
+                about_p2: "Every build comes with a clean Windows 11 install (no bloatware), latest drivers, BIOS optimization, and a 30-day workshop warranty. We stand behind our work.",
+                about_f1_title: "30-Day Warranty", about_f1_desc: "On all builds and repair services",
+                about_f2_title: "Bench-Tested", about_f2_desc: "Thermal & stress validated before pickup",
+                about_f3_title: "Same-Day Service", about_f3_desc: "Most repairs completed same day",
+                about_f4_title: "In-Person Testing", about_f4_desc: "See your PC running before you buy",
+                counter_pcs: "PCs Built & Sold", counter_clients: "Satisfied Clients", counter_rating: "Star Rating",
+                gallery_tag: "OUR WORK SPEAKS", gallery_title: "BUILD GALLERY",
+                gallery_desc: "Cable management artistry, clean builds, and thermal perfection — every rig is a showcase.",
+                compare_tag: "SIDE BY SIDE", compare_title: "COMPARE OUR BUILDS",
+                compare_desc: "Not sure which build is right for you? Compare specs at a glance to find your perfect rig.",
+                faq_tag: "GOT QUESTIONS?", faq_title: "FREQUENTLY ASKED",
+                faq_desc: "Everything you need to know before visiting our Montreal workshop.",
+                faq_q1: "Do you offer delivery or is it pickup only?",
+                faq_a1: "Currently we operate on an in-person pickup model from our Montreal workshop at 111 rue Chabanel Ouest, Suite 414. This allows you to see your PC running, test it in person, and take it home the same day. We can discuss delivery options for special cases via WhatsApp.",
+                faq_q2: "What is your warranty policy?",
+                faq_a2: "All custom builds come with a 30-day workshop warranty covering hardware defects and assembly issues. We also honor manufacturer warranties on all individual components (typically 3 years for GPUs, 3-5 years for PSUs). Repair services include a 14-day service guarantee.",
+                faq_q3: "How long does a typical build or repair take?",
+                faq_a3: "Most custom PC builds are completed within 1-2 business days. Simple services like cleaning, repasting, and diagnostics are often done same-day. Complex repairs may take 2-3 days depending on parts availability. We'll keep you updated via WhatsApp throughout the process.",
+                faq_q4: "Do you offer financing or payment plans?",
+                faq_a4: "We accept cash and e-transfer at our workshop. For builds over $1,000 CAD, we can arrange a deposit-and-balance payment structure. Contact us via WhatsApp to discuss options that work for your budget.",
+                faq_q5: "Can I trade in my old PC or components?",
+                faq_a5: "Yes! We accept trade-ins on working components and full systems. The value will be applied as credit toward your new build or service. Contact us with photos of your current hardware for a quick estimate.",
+                faq_q6: "How does the CoreX Run game discount work?",
+                faq_a6: "Play our browser game \"CoreX Run\" and earn real discounts! Every 10 points scored equals $1 CAD off any gaming computer purchase, up to $50 CAD maximum. Just mention your score when contacting us or claim it through the game's share feature.",
+                faq_q7: "What areas of Montreal do you serve?",
+                faq_a7: "Our workshop is located in the Chabanel neighborhood (Ahuntsic-Cartierville area), easily accessible from all parts of Montreal and surrounding areas including Laval, Longueuil, and the West Island. We serve all of Greater Montreal and Quebec.",
+                booking_tag: "SCHEDULE YOUR VISIT", booking_title: "BOOK AN APPOINTMENT",
+                booking_desc: "Walk-ins are welcome, but booking ensures a technician is ready for you.",
+                booking_h3: "Ready to Get Started?",
+                booking_p: "Contact us to schedule a consultation, discuss a custom build, or book a repair service. We respond fast on WhatsApp.",
+                booking_whatsapp: "💬 Book via WhatsApp", booking_call: "📞 Call to Schedule",
+                blog_tag: "LATEST FROM COREX", blog_title: "NEWS & DEALS",
+                blog_desc: "PC building tips, hardware news, and exclusive promotions from our Montreal workshop.",
+                blog1_title: "Play CoreX Run — Earn Up to $50 Off", blog1_excerpt: "Our browser game rewards real discounts. Every 10 points = $1 off any gaming PC purchase. How high can you score?",
+                blog2_title: "When Should You Repaste Your GPU?", blog2_excerpt: "Signs your graphics card needs thermal maintenance: high temps, thermal throttling, and fan noise. We break it down.",
+                blog3_title: "RTX 50 Series — What to Expect", blog3_excerpt: "NVIDIA's next-gen GPUs are coming. Here's what Montreal gamers should know about pricing, availability, and performance.",
+                contact_tag: "MONTREAL DIRECT ACCESS", contact_title: "CONNECT WITH COREX MONTREAL",
+                contact_desc: "Reach out directly via your preferred platform to discuss a custom build, service, or reserve any PC in our catalog.",
+                ch_whatsapp: "WhatsApp", ch_whatsapp_detail: "Fast Direct Message",
+                ch_facebook: "Facebook", ch_facebook_detail: "Messenger Chat",
+                ch_instagram: "Instagram", ch_instagram_detail: "@corexmontreal",
+                ch_sms: "Text Message", ch_sms_detail: "Direct SMS to Workshop",
+                ch_phone: "Phone Call", ch_phone_detail: "450-518-0296",
+                modal_order_title: "CONTACT DIRECTLY TO ORDER OR RESERVE:",
+                modal_whatsapp: "💬 WhatsApp", modal_messenger: "📘 Messenger",
+                modal_sms: "📱 Text SMS", modal_call: "📞 Call Now",
+                footer_note: "Montreal's premier custom PC engineering, hardware triage, thermal repasting, and component upgrade workshop.",
+                footer_hours: "Hours:", footer_hours_val: "Appointments only for now",
+                footer_hotline: "Direct Hotline:", footer_reviews: "Reviews:",
+                footer_inperson: "In-person verification & local Montreal pickup.",
+                contact_subject: "INQUIRE ABOUT BUILD",
+                contact_choose: "Choose your preferred channel to connect with our Montreal workshop technician:",
+                contact_fast: "Fast response times. Direct communication with our Montreal build specialists.",
+                wa_title: "Chat on WhatsApp"
+            },
+            fr: {
+                preloader_text: "L'ÉNERGIE DES GAMERS DU QUÉBEC",
+                nav_home: "Accueil", nav_builders: "Configurations", nav_services: "Services",
+                nav_about: "À propos", nav_reviews: "Avis", nav_faq: "FAQ",
+                nav_contact: "Contact", nav_contact_us: "Nous joindre",
+                hero_title: "CRÉEZ VOTRE PC ULTIMATE À MONTRÉAL",
+                hero_subtitle: "CoreX : L'énergie des gamers du Québec.",
+                hero_explore: "VOIR LES CONFIGURATIONS", hero_play: "🎮 JOUER À COREX RUN",
+                hero_play_save: "⚡ JOUEZ ET ÉCONOMISEZ : Chaque 10 points = 1$ de rabais sur un ordinateur (max 50$ CAD)",
+                catalog_tag: "CONFIGURATIONS MATÉRIELLES", catalog_title: "PC SUR MESURE EN VEDETTE",
+                catalog_desc: "Assemblés à la main, testés thermiquement et calibrés à Montréal. Sélectionnez une configuration pour voir les spécifications techniques complètes.",
+                btn_view_specs: "VOIR LES SPECS", btn_order: "COMMANDER",
+                services_tag: "CAPACITÉS DE L'ATELIER", services_title: "NOS SERVICES ET EXPERTISE",
+                services_desc: "De la construction sur mesure à la repâte de芯片 et la récupération de données — le tout exécuté à Montréal.",
+                svc_custom_build: "Construction PC Sur Mesure", svc_windows: "Installation Windows et Pilotes",
+                svc_cpu_repaste: "Repâte CPU", svc_gpu_repaste: "Repâte GPU",
+                svc_cleaning: "Nettoyage d'Ordinateur", svc_case_swap: "Transfert de Boîtier",
+                svc_data_recovery: "Récupération de Données HDD/SSD", svc_upgrades: "Mise à Niveau de Composants",
+                svc_repairs: "Réparations Matérielles", svc_diagnostics: "Diagnostiques",
+                svc_custom_build_desc: "Assemblage professionnel complet avec gestion chirurgicale des câbles, pression positive optimale des ventilateurs et validation du BIOS.",
+                svc_windows_desc: "Installation propre de Windows 11/10 sans bloatware. Derniers pilotes stables du chipset, GPU, audio et réseau configurés.",
+                svc_cpu_repaste_desc: "Nettoyage thermique complet et réapplication de pâte thermique premium haute conductivité (Thermal Grizzly / Arctic MX-6) pour réduire les températures.",
+                svc_gpu_repaste_desc: "Démontage précis de la carte graphique, retrait de l'ancien composé, renouvellement de la pâte thermique et remplacement des pads thermiques VRAM.",
+                svc_cleaning_desc: "Décontamination antistatique approfondie des radiateurs, pales de ventilateurs, dissipateurs, filtres mesh et intérieur du boîtier.",
+                svc_case_swap_desc: "Migration de tout le matériel existant dans un boîtier moderne haute circulation ou à double chambre avec câblage et orientation des ventilateurs neufs.",
+                svc_data_recovery_desc: "Récupération d'urgence pour inaccessibles, secteurs défectueux ou partitions corrompues. Migration sécuritaire vers des SSD NVMe haute vitesse.",
+                svc_upgrades_desc: "Remplacement de GPU, doublement de la RAM, expansion de stockage NVMe et mises à niveau d'alimentation modulaire avec vériction de goulot.",
+                svc_repairs_desc: "Isolation et remplacement au niveau des composants pour cartes mères défaillantes, alimentations grillées, ventilateurs morts ou connecteurs I/O.",
+                svc_diagnostics_desc: "Tri complet sur établi pour crashs système, écrans bleus (BSOD), boucles de démarrage, écran noir et throttling thermique intermittent.",
+                svc_price_custom: "À partir de 80$ de main-d'œuvre", svc_price_windows: "À partir de 50$",
+                svc_price_cpu: "À partir de 40$", svc_price_gpu: "À partir de 60$",
+                svc_price_clean: "À partir de 45$", svc_price_case: "À partir de 70$",
+                svc_price_data: "Évaluation gratuite", svc_price_upgrade: "À partir de 30$",
+                svc_price_repair: "Diagnostic à partir de 40$", svc_price_diag: "À partir de 40$",
+                btn_inquire: "Nous joindre par chat ou appel",
+                reviews_tag: "CE QUE DISENT NOS CLIENTS", reviews_title: "NOTÉ 5 ÉTOILES SUR GOOGLE",
+                reviews_desc: "Ne nous croyez pas sur parole — écoutez les vrais gamers de Montréal qui ont fait confiance à CoreX.",
+                review1_text: '"Meilleur magasin de PC à Montréal! Ils ont construit mon PC sur mesure avec une gestion des câbles incroyable. Ça roule froid et silencieux. Hautement recommandé pour les gamers sérieux."',
+                review2_text: '"J\'ai apporté mon ordinateur portable qui surchauffait pour une repâte GPU. Fait le même jour, les températures ont baissé de 20 degrés. Service professionnel et prix équitable. CoreX est maintenant mon premier choix."',
+                review3_text: '"Ils ont sauvé mes données d\'un SSD mourant quand tout le monde disait que c\'était impossible. Délai rapide et ils m\'ont tenu au courant tout le temps. De vrais experts."',
+                review1_name: "Marc-André L.", review2_name: "Sarah K.", review3_name: "Jean-François D.",
+                stat_rating: "Note Google", stat_pcs: "PC Vendus", stat_clients: "Clients Satisfaits", stat_repair: "Réparations Rapides",
+                about_tag: "L'ATELIER PC DE MONTRÉAL", about_title: "POURQUOI CHOISIR COREX",
+                about_desc: "Nous ne sommes pas un grand magasin. Nous sommes des gamers montréalais qui construisent pour des gamers montréalais — avec une vrai expertise et un service personnalisé.",
+                about_h3: "Construit Par des Gamers, Pour des Gamers",
+                about_p1: "CoreX Montréal est un atelier PC spécialisé au cœur de Chabanel. Nous assemblons chaque PC sur mesure, effectuons des tests thermiques méticuleux et nous assurons que chaque système est optimisé pour des performances maximales.",
+                about_p2: "Chaque build vient avec une installation propre de Windows 11 (sans bloatware), les derniers pilotes, optimisation du BIOS et une garantie atelier de 30 jours. Nous garantissons notre travail.",
+                about_f1_title: "Garantie 30 Jours", about_f1_desc: "Sur tous les builds et services de réparation",
+                about_f2_title: "Testé Sur Établi", about_f2_desc: "Validé thermiquement avant le retrait",
+                about_f3_title: "Service Le Jour Même", about_f3_desc: "La plupart des réparations complétées le jour même",
+                about_f4_title: "Tests En Personne", about_f4_desc: "Voyez votre PC fonctionner avant d'acheter",
+                counter_pcs: "PC Construits et Vendus", counter_clients: "Clients Satisfaits", counter_rating: "Note Étoiles",
+                gallery_tag: "NOTRE TRAVAIL PARLE", gallery_title: "GALERIE DE BUILDS",
+                gallery_desc: "Art de la gestion des câbles, builds propres et perfection thermique — chaque PC est une vitrine.",
+                compare_tag: "CÔTE À CÔTE", compare_title: "COMPARER NOS CONFIGURATIONS",
+                compare_desc: "Pas sûr quel build vous convient? Comparez les specs d'un coup d'œil pour trouver votre PC parfait.",
+                faq_tag: "DES QUESTIONS?", faq_title: "FOIRE AUX QUESTIONS",
+                faq_desc: "Tout ce que vous devez savoir avant de visiter notre atelier à Montréal.",
+                faq_q1: "Offrez-vous la livraison ou c'est uniquement au retrait?",
+                faq_a1: "Actuellement, nous opérons selon un modèle de retrait en personne depuis notre atelier au 111 rue Chabanel Ouest, Suite 414. Cela vous permet de voir votre PC fonctionner, le tester en personne et le ramener le même jour. Nous pouvons discuter d'options de livraison pour les cas spéciaux via WhatsApp.",
+                faq_q2: "Quelle est votre politique de garantie?",
+                faq_a2: "Tous les builds sur mesure comprennent une garantie atelier de 30 jours couvrant les défauts matériels et les problèmes d'assemblage. Nous honorons également les garanties du fabricant sur tous les composants individuels (généralement 3 ans pour les GPU, 3-5 ans pour les alimentations). Les services de réparation incluent une garantie de service de 14 jours.",
+                faq_q3: "Combien de temps prend un build ou une réparation typique?",
+                faq_a3: "La plupart des builds PC sur mesure sont complétés dans les 1 à 2 jours ouvrables. Les services simples comme le nettoyage, la repâte et les diagnostiques sont souvent faits le jour même. Les réparations complexes peuvent prendre 2-3 jours selon la disponibilité des pièces.",
+                faq_q4: "Offrez-vous du financement ou des plans de paiement?",
+                faq_a4: "Nous acceptons le comptant et le virement Interac à notre atelier. Pour les builds de plus de 1 000$ CAD, nous pouvons arranger une structure de paiement par dépôt et solde. Contactez-nous via WhatsApp pour discuter des options.",
+                faq_q5: "Puis-je échanger mon ancien PC ou mes composants?",
+                faq_a5: "Oui! Nous acceptons les échanges de composants fonctionnels et de systèmes complets. La valeur sera appliquée comme crédit pour votre nouveau build ou service. Contactez-nous avec des photos de votre matériel pour une estimation rapide.",
+                faq_q6: "Comment fonctionne la réduction du jeu CoreX Run?",
+                faq_a6: "Jouez à notre jeu de navigateur \"CoreX Run\" et gagnez de vraies réductions! Chaque 10 points marqués égalent 1$ CAD de rabais sur tout achat d'ordinateur, jusqu'à un maximum de 50$ CAD. Mentionnez simplement votre score ou réclamez-le via la fonction de partage du jeu.",
+                faq_q7: "Quelles régions de Montréal servez-vous?",
+                faq_a7: "Notre atelier est situé dans le quartier de Chabanel (région Ahuntsic-Cartierville), facilement accessible depuis toutes les parties de Montréal et des régions environnantes incluant Laval, Longueuil et l'Île-Ouest. Nous servons tout le Grand Montréal et le Québec.",
+                booking_tag: "PLANIFIEZ VOTRE VISITE", booking_title: "RÉSERVER UN RENDEZ-VOUS",
+                booking_desc: "Les visites sans rendez-vous sont bienvenues, mais la réservation garantit qu'un technicien est prêt pour vous.",
+                booking_h3: "Prêt à Commencer?",
+                booking_p: "Contactez-nous pour planifier une consultation, discuter d'un build sur mesure ou réserver un service de réparation. Nous répondons rapidement sur WhatsApp.",
+                booking_whatsapp: "💬 Réserver via WhatsApp", booking_call: "📞 Appeler pour Planifier",
+                blog_tag: "DERNIÈRES NOUVELLES", blog_title: "ACTUALITÉS ET PROMOTIONS",
+                blog_desc: "Conseils de build PC, nouvelles matérielles et promotions exclusives de notre atelier montréalais.",
+                blog1_title: "Jouez à CoreX Run — Gagnez jusqu'à 50$ de rabais",
+                blog1_excerpt: "Notre jeu de navigateur récompense de vraies réductions. Chaque 10 points = 1$ de rabais. Quel est votre score?",
+                blog2_title: "Quand Faut-il Repâter Son GPU?",
+                blog2_excerpt: "Signes que votre carte graphique a besoin d'entretien thermique: hautes températures, throttling et bruit de ventilateur.",
+                blog3_title: "Série RTX 50 — À Quoi S'Attendre",
+                blog3_excerpt: "Les GPU de nouvelle génération de NVIDIA arrivent. Voici ce que les gamers montréalais doivent savoir sur les prix et la disponibilité.",
+                contact_tag: "ACCÈS DIRECT MONTRÉAL", contact_title: "CONNECTEZ-VOUS AVEC COREX MONTRÉAL",
+                contact_desc: "Contactez-nous directement via votre plateforme préférée pour discuter d'un build, d'un service ou réserver un PC.",
+                ch_whatsapp: "WhatsApp", ch_whatsapp_detail: "Message Direct Rapide",
+                ch_facebook: "Facebook", ch_facebook_detail: "Chat Messenger",
+                ch_instagram: "Instagram", ch_instagram_detail: "@corexmontreal",
+                ch_sms: "Message Texte", ch_sms_detail: "SMS Direct à l'Atelier",
+                ch_phone: "Appel Téléphonique", ch_phone_detail: "450-518-0296",
+                modal_order_title: "CONTACTEZ-NOUS DIRECTEMENT POUR COMMANDER OU RÉSERVER:",
+                modal_whatsapp: "💬 WhatsApp", modal_messenger: "📘 Messenger",
+                modal_sms: "📱 SMS Texto", modal_call: "📞 Appeler",
+                footer_note: "L'atelier montréalais de premier plan pour l'ingénierie PC sur mesure, le tri matériel, la repâte thermique et la mise à niveau de composants.",
+                footer_hours: "Heures:", footer_hours_val: "Sur rendez-vous pour l'instant",
+                footer_hotline: "Ligne directe:", footer_reviews: "Avis:",
+                footer_inperson: "Vérification en personne et retrait local à Montréal.",
+                contact_subject: "SE RENSEINIR SUR UNE CONFIGURATION",
+                contact_choose: "Choisissez votre canal préféré pour joindre notre technicien de l'atelier montréalais:",
+                contact_fast: "Temps de réponse rapides. Communication directe avec nos spécialistes de build montréalais.",
+                wa_title: "Discuter sur WhatsApp"
+            }
+        };
+
+        let currentLang = localStorage.getItem('cx_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('cx_lang', lang);
+            document.getElementById('langLabel').textContent = lang === 'en' ? 'FR' : 'EN';
+            document.documentElement.lang = lang;
+            document.title = lang === 'fr'
+                ? 'CoreX Montréal | Créez Votre PC Ultime à Montréal'
+                : 'CoreX Montreal | Build Your Ultimate Rig in Montreal';
+            const t = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+            // Update WhatsApp link language
+            const waBtn = document.getElementById('floatingWa');
+            if (waBtn) {
+                const waText = lang === 'fr'
+                    ? "Bonjour CoreX Montréal, je suis intéressé par une configuration ou un service."
+                    : "Hello CoreX Montreal, I am interested in a custom build / service.";
+                waBtn.href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waText)}`;
+            }
+        }
+
+        function toggleLanguage() {
+            setLanguage(currentLang === 'en' ? 'fr' : 'en');
+        }
+
+        // Detect browser language on first visit
+        if (!localStorage.getItem('cx_lang')) {
+            currentLang = navigator.language.startsWith('fr') ? 'fr' : 'en';
+        }
+        setLanguage(currentLang);
 
         const PRODUCTS = [
             {
