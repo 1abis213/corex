@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /game/
+Disallow: /game_plan/
+Disallow: /scratch_frames/
+
+Sitemap: https://corexmontreal.com/sitemap.xml
