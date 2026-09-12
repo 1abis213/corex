@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>CoreX Run | Dodge the Grid & Win Discounts</title>
+    <meta name="description" content="Play CoreX Run - dodge the neon barriers as the CoreX mascot. Every 10 points is $1 off a gaming computer purchase, max CAD$50!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --red: #a61e2b;
+            --red-glow: rgba(166,30,43,0.7);
+            --red-bright: #e6283b;
+            --dark: #07090d;
+            --gold: #ffd700;
+        }
+        html, body {
+            width: 100%; height: 100%;
+            background: var(--dark);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #game-wrap {
+            position: relative;
+            width: 100vw; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+        canvas { display: block; }
+        
+        /* Top Navigation Bar */
+        .top-bar {
+            position: absolute;
+            top: 16px; left: 20px; right: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10;
+            pointer-events: auto;
+        }
+        .back-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px; font-weight: 800;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+        }
+        .back-link:hover {
+            color: #fff;
+            background: rgba(166,30,43,0.3);
+            border-color: var(--red);
+        }
+        .sound-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            backdrop-filter: blur(8px);
+            transition: background 0.2s;
+        }
+        .sound-btn:hover { background: rgba(255,255,255,0.15); }
+
+        /* HUD Overlay */
+        #hud {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 70px 24px 24px;
+        }
+        .hud-top {
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        .hud-score-box {
+            display: flex; flex-direction: column;
+        }
+        #score-val {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(42px, 8vw, 76px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #fff;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(166,30,43,0.85);
+        }
+        #level-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(166,30,43,0.25);
+            border: 1px solid rgba(166,30,43,0.6);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px; font-weight: 800;
+            letter-spacing: 0.12em;
+            color: #ff8b97;
+            text-transform: uppercase;
+            margin-top: 6px;
+            width: fit-content;
+        }
+        .hud-reward-box {
+            background: rgba(12,15,20,0.85);
+            border: 1px solid rgba(255,215,0,0.35);
+            border-radius: 8px;
+            padding: 10px 16px;
+            text-align: right;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), border-color 0.3s;
+        }
+        .hud-reward-box.cha-ching-glow {
+            transform: scale(1.12);
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(255,215,0,0.6);
+        }
+        .hud-discount-label {
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.6);
+        }
+        .hud-discount-val {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(18px, 3.5vw, 26px);
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(255,215,0,0.5);
+            line-height: 1.1;
+        }
+        .hud-next-progress {
+            font-size: 10px; color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+
+        /* Floating Cha-Ching Notification */
+        #cha-ching-banner {
+            position: absolute;
+            top: 18%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            background: linear-gradient(135deg, rgba(20,24,34,0.95), rgba(166,30,43,0.4));
+            border: 2px solid var(--gold);
+            border-radius: 99px;
+            padding: 10px 24px;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 0 35px rgba(255,215,0,0.6);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 30;
+        }
+        #cha-ching-banner.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        .cha-ching-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(16px, 4vw, 22px);
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 16px rgba(255,215,0,0.8);
+            text-transform: uppercase;
+        }
+
+        /* Screens */
+        .screen {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: rgba(7,9,13,0.86);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            padding: 24px; text-align: center;
+            z-index: 20;
+            overflow-y: auto;
+        }
+        .hidden, .screen.hidden { display: none !important; }
+
+        /* Start Screen */
+        .logo-area {
+            display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;
+        }
+        .game-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            color: #fff;
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(166,30,43,0.6);
+        }
+        .game-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(11px, 2.5vw, 13px);
+            font-weight: 800;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--red-bright);
+            margin-top: 6px;
+        }
+        #mascot-canvas {
+            width: clamp(140px, 26vw, 190px);
+            height: clamp(90px, 17vw, 126px);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 25px rgba(166,30,43,0.85));
+            animation: floatMascot 2.2s ease-in-out infinite alternate;
+        }
+        @keyframes floatMascot {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-10px) scale(1.02); }
+        }
+
+        /* Reward Promo Banner */
+        .reward-banner {
+            background: linear-gradient(135deg, rgba(166,30,43,0.2) 0%, rgba(20,24,34,0.9) 100%);
+            border: 1px solid rgba(255,215,0,0.4);
+            border-radius: 12px;
+            padding: 16px 22px;
+            max-width: 440px;
+            width: 100%;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,215,0,0.06);
+            text-align: center;
+        }
+        .reward-banner-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px; font-weight: 900;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--gold);
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-bottom: 6px;
+        }
+        .reward-banner-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(14px, 3.2vw, 16px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.35;
+        }
+        .reward-banner-title span { color: var(--gold); font-weight: 900; }
+        .reward-banner-sub {
+            font-size: 11px;
+            color: rgba(255,255,255,0.65);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .tap-hint {
+            font-size: clamp(12px, 2.8vw, 14px);
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+        .tap-hint strong { color: #fff; }
+
+        /* Buttons */
+        .btn {
+            position: relative;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 15px 36px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(13px, 3vw, 16px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transform: skew(-15deg);
+            overflow: hidden;
+            transition: box-shadow 0.25s ease, transform 0.2s ease;
+            box-shadow: 0 6px 28px rgba(166,30,43,0.55);
+            min-width: 190px;
+            touch-action: manipulation;
+        }
+        .btn span { display: inline-block; transform: skew(15deg); }
+        .btn::before {
+            content: ''; position: absolute; inset: 0; right: 100%;
+            background: #0c0f14; opacity: 0;
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        .btn:hover {
+            transform: skew(-15deg) translateY(-3px);
+            box-shadow: 0 10px 36px rgba(166,30,43,0.8);
+        }
+        .btn:hover::before { right: 0; opacity: 1; }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.8);
+            box-shadow: none;
+        }
+        .btn-ghost::before { background: rgba(255,255,255,0.08); }
+        .btn-ghost:hover {
+            border-color: rgba(255,255,255,0.6);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+
+        .btn-claim {
+            background: #25D366;
+            color: #0c0f14;
+            box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+        }
+        .btn-claim::before { background: #1eb857; opacity: 0; }
+        .btn-claim:hover { box-shadow: 0 10px 32px rgba(37,211,102,0.65); }
+
+        .btn-share {
+            background: transparent;
+            border: 1px solid rgba(255,215,0,0.5);
+            color: var(--gold);
+            box-shadow: 0 4px 18px rgba(255,215,0,0.2);
+        }
+        .btn-share::before { background: rgba(255,215,0,0.15); }
+        .btn-share:hover { box-shadow: 0 8px 24px rgba(255,215,0,0.4); }
+
+        .btn-row {
+            display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 14px;
+        }
+
+        /* Game Over Screen */
+        .go-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(24px, 6vw, 42px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .go-sub {
+            font-size: clamp(12px, 2.6vw, 14px);
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 18px;
+            max-width: 360px;
+        }
+        .go-score-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; max-width: 440px; width: 100%;
+            margin-bottom: 16px;
+        }
+        .go-stat-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 14px 18px;
+            text-align: center;
+        }
+        .go-stat-label {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 4px;
+        }
+        .go-stat-num {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(34px, 7vw, 48px);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+        }
+        #go-score { text-shadow: 0 0 25px rgba(166,30,43,0.9); }
+        #go-best { color: rgba(255,255,255,0.85); }
+        .new-best-flash {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px; font-weight: 900;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--gold);
+            text-shadow: 0 0 12px rgba(255,215,0,0.7);
+            margin-top: 4px;
+            animation: pulse 0.6s ease-in-out infinite alternate;
+        }
+
+        /* Game Over Discount Unlocked Box */
+        .go-discount-card {
+            background: linear-gradient(135deg, rgba(20,24,34,0.95) 0%, rgba(166,30,43,0.25) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 18px 20px;
+            max-width: 440px; width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(255,215,0,0.2);
+            text-align: center;
+        }
+        .go-discount-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px; font-weight: 900;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+        .go-discount-val {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(28px, 6vw, 40px);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(255,215,0,0.6);
+        }
+        .go-discount-info {
+            font-size: 12px;
+            color: rgba(255,255,255,0.75);
+            margin-top: 8px;
+            line-height: 1.45;
+        }
+        .go-discount-info strong { color: var(--gold); }
+
+        /* Level Up Flash Banner */
+        #level-announcement {
+            position: absolute;
+            top: 28%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(12,15,20,0.92);
+            border: 2px solid var(--red-bright);
+            box-shadow: 0 0 40px rgba(166,30,43,0.8), inset 0 0 20px rgba(166,30,43,0.4);
+            border-radius: 12px;
+            padding: 18px 36px;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 15;
+            white-space: nowrap;
+        }
+        #level-announcement.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .lvl-ann-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(20px, 5vw, 32px);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 20px rgba(230,40,59,0.9);
+        }
+        .lvl-ann-sub {
+            font-size: 13px; font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        #toast {
+            position: absolute; bottom: 28px; left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-size: 13px; font-weight: 600;
+            padding: 10px 22px; border-radius: 99px;
+            white-space: nowrap; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 50;
+        }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) {
+            #mascot-canvas, .new-best-flash { animation: none; }
+        }
+    </style>
+</head>
+<body>
+<div id="game-wrap">
+    <canvas id="c"></canvas>
+
+    <!-- Top Controls -->
+    <div class="top-bar">
+        <a href="../index.html" class="back-link">&#8592; CoreX Store</a>
+        <button id="sound-toggle" class="sound-btn" onclick="toggleSound()" title="Toggle Sound">🔊</button>
+    </div>
+
+    <!-- Live In-Game HUD -->
+    <div id="hud" class="hidden">
+        <div class="hud-top">
+            <div class="hud-score-box">
+                <div id="score-val">0</div>
+                <div id="level-badge">⚡ LVL 1: CALIBRATION</div>
+            </div>
+            <div class="hud-reward-box" id="hud-reward-box">
+                <div class="hud-discount-label">Discount Earned</div>
+                <div class="hud-discount-val" id="hud-discount">$0 CAD</div>
+                <div class="hud-next-progress" id="hud-progress">10 pts to +$1</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cha-Ching Dollar Earned Popup Banner -->
+    <div id="cha-ching-banner">
+        <span style="font-size: 20px;">💰</span>
+        <div class="cha-ching-text" id="cha-ching-msg">+CAD $1 OFF!</div>
+    </div>
+
+    <!-- Level Up Floating Banner -->
+    <div id="level-announcement">
+        <div class="lvl-ann-title" id="ann-title">LEVEL UP!</div>
+        <div class="lvl-ann-sub" id="ann-sub">SPEED & HAZARDS INCREASED</div>
+    </div>
+
+    <!-- Screen: Start -->
+    <div id="screen-start" class="screen">
+        <div class="logo-area">
+            <canvas id="mascot-canvas" width="190" height="126"></canvas>
+            <div class="game-title">CoreX Run</div>
+            <div class="game-sub">Dodge the Grid • Earn Your Rig</div>
+        </div>
+
+        <!-- Promo Challenge Box -->
+        <div class="reward-banner">
+            <div class="reward-banner-tag">🎁 CoreX Play-to-Save Promo</div>
+            <div class="reward-banner-title">
+                Every <span>10 points = $1 OFF</span> a gaming computer purchase!
+            </div>
+            <div class="reward-banner-sub">
+                Maximum <strong>CAD $50 OFF</strong> • Valid on custom builds & prebuilt gaming PCs.<br>
+                Survive increasing levels: faster obstacles, tighter gaps & oscillating lasers!
+            </div>
+        </div>
+
+        <p class="tap-hint"><strong>Tap</strong> or press <strong>Space / Arrow Up</strong> to fly & boost</p>
+        <button class="btn" onclick="startGame()"><span>Play Now</span></button>
+        <div class="btn-row" style="margin-top: 14px;">
+            <button class="btn btn-ghost" onclick="shareGame()"><span>Challenge Friends</span></button>
+        </div>
+    </div>
+
+    <!-- Screen: Game Over -->
+    <div id="screen-over" class="screen hidden">
+        <div class="go-title">SYSTEM OVERLOAD</div>
+        <p class="go-sub" id="go-cause">You hit the neon grid! Here is your result:</p>
+
+        <div class="go-score-grid">
+            <div class="go-stat-card">
+                <div class="go-stat-label">Final Score</div>
+                <div class="go-stat-num" id="go-score">0</div>
+                <div id="new-best-label" class="new-best-flash hidden">NEW BEST!</div>
+            </div>
+            <div class="go-stat-card">
+                <div class="go-stat-label">Highest Score</div>
+                <div class="go-stat-num" id="go-best">0</div>
+                <div class="go-stat-label" style="margin-top:4px;" id="go-max-lvl">LEVEL 1</div>
+            </div>
+        </div>
+
+        <!-- Earned Discount Voucher -->
+        <div class="go-discount-card" id="discount-card">
+            <div class="go-discount-tag">🏷️ Reward Voucher</div>
+            <div class="go-discount-val" id="go-discount-amount">CAD $0 OFF</div>
+            <div class="go-discount-info" id="go-discount-desc">
+                Every 10 points is $1 off a gaming computer purchase, maximum CAD$50.<br>
+                Score 10+ points to start earning discounts!
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" onclick="startGame()"><span>Try Again</span></button>
+            <button class="btn btn-claim hidden" id="claim-btn" onclick="claimDiscount()"><span>Claim Discount</span></button>
+            <button class="btn btn-share" onclick="shareScore()"><span>Challenge Friends</span></button>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+</div>
+
+<script>
+'use strict';
+
+// ----------------------------------------------------
+// SOUND SYNTHESIZER (Web Audio API)
+// ----------------------------------------------------
+let soundEnabled = true;
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('sound-toggle');
+    btn.textContent = soundEnabled ? '🔊' : '🔇';
+    showToast(soundEnabled ? 'Sound Enabled' : 'Sound Muted');
+}
+
+// 1. Natural Wing/Thruster Boost Sound
+function sfxJump() {
+    if (!soundEnabled) return;
+    try {
+        initAudio();
+        if (!audioCtx) return;
+        const t0 = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(200, t0);
+        osc.frequency.exponentialRampToValueAtTime(460, t0 + 0.10);
+        g.gain.setValueAtTime(0.18, t0);
+        g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.12);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start(t0);
+        osc.stop(t0 + 0.12);
+    } catch(e) {}
+}
+
+// 2. Sound Effect for EVERY Pillar Passed (+1 Point)
+function sfxPillarPoint() {
+    if (!soundEnabled) return;
+    try {
+        initAudio();
+        if (!audioCtx) return;
+        const t0 = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        // Crisp, bright digital coin ping (1046 Hz sliding to 1318 Hz)
+        osc.frequency.setValueAtTime(1046.50, t0); // C6
+        osc.frequency.exponentialRampToValueAtTime(1318.51, t0 + 0.07); // E6
+        g.gain.setValueAtTime(0.22, t0);
+        g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.11);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start(t0);
+        osc.stop(t0 + 0.11);
+    } catch(e) {}
+}
+
+// 3. CHA-CHING! Sound Effect for EVERY Dollar Earned ($1 OFF = every 10 points)
+function sfxChaChing() {
+    if (!soundEnabled) return;
+    try {
+        initAudio();
+        if (!audioCtx) return;
+        const t0 = audioCtx.currentTime;
+
+        // Part A: "Cha" - metallic drawer slide / latch click
+        const oscLatch = audioCtx.createOscillator();
+        const gLatch = audioCtx.createGain();
+        oscLatch.type = 'triangle';
+        oscLatch.frequency.setValueAtTime(1350, t0);
+        oscLatch.frequency.exponentialRampToValueAtTime(2400, t0 + 0.05);
+        gLatch.gain.setValueAtTime(0.26, t0);
+        gLatch.gain.exponentialRampToValueAtTime(0.001, t0 + 0.07);
+        oscLatch.connect(gLatch);
+        gLatch.connect(audioCtx.destination);
+        oscLatch.start(t0);
+        oscLatch.stop(t0 + 0.07);
+
+        // Part B: "CHING!" - Resonant dual bell cash register chime
+        const tChing = t0 + 0.075;
+
+        // Bell 1: E7 (2637 Hz) with rich metallic decay
+        const bell1 = audioCtx.createOscillator();
+        const gBell1 = audioCtx.createGain();
+        bell1.type = 'sine';
+        bell1.frequency.setValueAtTime(2637.02, tChing);
+        gBell1.gain.setValueAtTime(0.38, tChing);
+        gBell1.gain.exponentialRampToValueAtTime(0.0005, tChing + 0.75);
+        bell1.connect(gBell1);
+        gBell1.connect(audioCtx.destination);
+        bell1.start(tChing);
+        bell1.stop(tChing + 0.75);
+
+        // Bell 2: B7 (3951 Hz) shimmering octave overtone
+        const bell2 = audioCtx.createOscillator();
+        const gBell2 = audioCtx.createGain();
+        bell2.type = 'sine';
+        bell2.frequency.setValueAtTime(3951.07, tChing);
+        gBell2.gain.setValueAtTime(0.28, tChing);
+        gBell2.gain.exponentialRampToValueAtTime(0.0005, tChing + 0.65);
+        bell2.connect(gBell2);
+        gBell2.connect(audioCtx.destination);
+        bell2.start(tChing);
+        bell2.stop(tChing + 0.65);
+
+        // Bell 3: High silver coin clink (5274 Hz)
+        const bell3 = audioCtx.createOscillator();
+        const gBell3 = audioCtx.createGain();
+        bell3.type = 'triangle';
+        bell3.frequency.setValueAtTime(5274.04, tChing + 0.02);
+        gBell3.gain.setValueAtTime(0.20, tChing + 0.02);
+        gBell3.gain.exponentialRampToValueAtTime(0.001, tChing + 0.40);
+        bell3.connect(gBell3);
+        gBell3.connect(audioCtx.destination);
+        bell3.start(tChing + 0.02);
+        bell3.stop(tChing + 0.40);
+    } catch(e) {}
+}
+
+// 4. Level Up Chime
+function sfxLevelUp() {
+    [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+        setTimeout(() => {
+            if (!soundEnabled || !audioCtx) return;
+            const t0 = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, t0);
+            g.gain.setValueAtTime(0.22, t0);
+            g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.20);
+            osc.connect(g);
+            g.connect(audioCtx.destination);
+            osc.start(t0);
+            osc.stop(t0 + 0.20);
+        }, i * 80);
+    });
+}
+
+// 5. Crash Sound
+function sfxCrash() {
+    if (!soundEnabled) return;
+    try {
+        initAudio();
+        if (!audioCtx) return;
+        const t0 = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(240, t0);
+        osc.frequency.exponentialRampToValueAtTime(35, t0 + 0.38);
+        g.gain.setValueAtTime(0.32, t0);
+        g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.39);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start(t0);
+        osc.stop(t0 + 0.39);
+    } catch(e) {}
+}
+
+// ----------------------------------------------------
+// CANVAS & ASSET SETUP
+// ----------------------------------------------------
+const SPRITE_SRC = 'sprite.png', BG_SRC = 'background.png', FRAME_COUNT = 6;
+const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+let W, H, DPR;
+
+// Natural, well-proportioned player sizing (Width 126px, Height 88px, Aspect Ratio 1.43:1)
+const PLAYER = {
+    x: 0, y: 0,
+    w: 126, h: 88,
+    vy: 0,
+    angle: 0,
+    frameIdx: 0,
+    animTimer: 0,
+    FRAME_INTERVAL: 0.085 // smooth 12fps time-based animation (no glitching/twitching!)
+};
+
+// Physics tuned for SUPER NATURAL, fluid arcade flight
+const GRAVITY = 1480;       // Natural acceleration downward
+const JUMP_VEL = -465;      // Responsive, buoyant jump
+const MAX_FALL = 720;       // Smooth terminal fall speed
+const PIPE_W = 58;
+
+function resize() {
+    DPR = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(DPR, DPR);
+
+    // Responsive player size (scaled gracefully on phone or monitor, maintaining 1.43 aspect ratio)
+    const ph = Math.min(94, Math.max(72, Math.round(H * 0.115)));
+    PLAYER.h = ph;
+    PLAYER.w = Math.round(ph * 1.43);
+}
+window.addEventListener('resize', resize);
+
+const spriteImg = new Image(), bgImg = new Image();
+let assetsReady = 0;
+spriteImg.onload = bgImg.onload = () => { assetsReady++; if (assetsReady === 2) onAssetsReady(); };
+spriteImg.onerror = bgImg.onerror = () => { assetsReady++; if (assetsReady === 2) onAssetsReady(); };
+spriteImg.src = SPRITE_SRC;
+bgImg.src = BG_SRC;
+
+function drawMascotPreview() {
+    if (!spriteImg.complete || !spriteImg.naturalWidth) return;
+    const mc = document.getElementById('mascot-canvas'), mctx = mc.getContext('2d');
+    const fw = Math.floor(spriteImg.naturalWidth / FRAME_COUNT), fh = spriteImg.naturalHeight;
+    mctx.clearRect(0, 0, mc.width, mc.height);
+    const scale = Math.min((mc.width - 12) / fw, (mc.height - 12) / fh);
+    const dw = fw * scale, dh = fh * scale;
+    mctx.drawImage(spriteImg, 0, 0, fw, fh, (mc.width - dw) / 2, (mc.height - dh) / 2, dw, dh);
+}
+
+function onAssetsReady() {
+    drawMascotPreview();
+    requestAnimationFrame(loop);
+}
+
+// ----------------------------------------------------
+// GAME STATE & PROGRESSION
+// ----------------------------------------------------
+let state = 'start'; // 'start' | 'play' | 'over'
+let score = 0, currentLevel = 1;
+let lastAwardedDiscount = 0;
+let bestScore = parseInt(localStorage.getItem('cx_best') || '0');
+let lastTime = 0, gameTime = 0;
+
+let pipes = [];
+let pipeTimer = 0;
+let bgX = 0;
+let particles = [];
+let thrusters = [];
+let coinFloats = [];
+let flashAlpha = 0;
+
+// Dynamic difficulty scaling
+function getLevelConfig(s) {
+    if (s < 10) {
+        return {
+            level: 1,
+            name: 'CALIBRATION',
+            speed: 235,
+            gapRatio: 0.33,
+            interval: 1.85,
+            oscillating: false
+        };
+    } else if (s < 25) {
+        return {
+            level: 2,
+            name: 'OVERCLOCKED',
+            speed: 285,
+            gapRatio: 0.285,
+            interval: 1.62,
+            oscillating: false
+        };
+    } else if (s < 45) {
+        return {
+            level: 3,
+            name: 'HIGH VOLTAGE',
+            speed: 330,
+            gapRatio: 0.25,
+            interval: 1.45,
+            oscillating: true,
+            oscSpeed: 1.6,
+            oscAmp: 30
+        };
+    } else if (s < 70) {
+        return {
+            level: 4,
+            name: 'CORE MELTDOWN',
+            speed: 375,
+            gapRatio: 0.22,
+            interval: 1.30,
+            oscillating: true,
+            oscSpeed: 2.2,
+            oscAmp: 44
+        };
+    } else if (s < 100) {
+        return {
+            level: 5,
+            name: 'QUANTUM GRID',
+            speed: 420,
+            gapRatio: 0.20,
+            interval: 1.18,
+            oscillating: true,
+            oscSpeed: 2.8,
+            oscAmp: 55
+        };
+    } else {
+        return {
+            level: 6,
+            name: 'MAX HAZARD',
+            speed: Math.min(520, 460 + (s - 100) * 1.5),
+            gapRatio: 0.185,
+            interval: 1.08,
+            oscillating: true,
+            oscSpeed: 3.3,
+            oscAmp: 65
+        };
+    }
+}
+
+function calculateDiscount(s) {
+    return Math.min(50, Math.floor(s / 10));
+}
+
+function updateHUD() {
+    document.getElementById('score-val').textContent = score;
+    const cfg = getLevelConfig(score);
+    document.getElementById('level-badge').textContent = `⚡ LVL ${cfg.level}: ${cfg.name}`;
+
+    const discount = calculateDiscount(score);
+    document.getElementById('hud-discount').textContent = `$${discount} CAD`;
+    
+    if (score >= 500) {
+        document.getElementById('hud-progress').textContent = 'MAX DISCOUNT REACHED ($50)';
+    } else {
+        const needed = 10 - (score % 10);
+        document.getElementById('hud-progress').textContent = `${needed} pt${needed === 1 ? '' : 's'} to +$1`;
+    }
+}
+
+function triggerChaChingBanner(dollarAmount) {
+    sfxChaChing();
+    const banner = document.getElementById('cha-ching-banner');
+    const msg = document.getElementById('cha-ching-msg');
+    const hudReward = document.getElementById('hud-reward-box');
+
+    msg.textContent = `CHA-CHING! +$1 OFF (CAD $${dollarAmount} TOTAL)`;
+    banner.classList.add('show');
+    hudReward.classList.add('cha-ching-glow');
+
+    // Add floating coin particle over the player
+    coinFloats.push({
+        x: PLAYER.x + PLAYER.w * 0.5,
+        y: PLAYER.y - 15,
+        vy: -110,
+        text: `+$1 OFF!`,
+        life: 1.2
+    });
+
+    setTimeout(() => {
+        banner.classList.remove('show');
+        hudReward.classList.remove('cha-ching-glow');
+    }, 2000);
+}
+
+function announceLevelUp(newLevel, name) {
+    sfxLevelUp();
+    const ann = document.getElementById('level-announcement');
+    const title = document.getElementById('ann-title');
+    const sub = document.getElementById('ann-sub');
+    
+    title.textContent = `LEVEL ${newLevel}: ${name}`;
+    const disc = calculateDiscount(score);
+    sub.textContent = disc > 0 ? `SPEED UP • $${disc} CAD DISCOUNT ACTIVE!` : `SPEED & HAZARDS INCREASED!`;
+    
+    ann.classList.add('show');
+    setTimeout(() => { ann.classList.remove('show'); }, 2200);
+}
+
+// ----------------------------------------------------
+// GAMEPLAY ACTIONS
+// ----------------------------------------------------
+function startGame() {
+    initAudio();
+    resize();
+    score = 0;
+    currentLevel = 1;
+    lastAwardedDiscount = 0;
+    gameTime = 0;
+    pipes = [];
+    particles = [];
+    thrusters = [];
+    coinFloats = [];
+    pipeTimer = 0.8;
+    flashAlpha = 0;
+
+    PLAYER.x = W * 0.22;
+    PLAYER.y = H * 0.45;
+    PLAYER.vy = 0;
+    PLAYER.angle = 0;
+    PLAYER.frameIdx = 0;
+    PLAYER.animTimer = 0;
+
+    updateHUD();
+    document.getElementById('hud').classList.remove('hidden');
+    document.getElementById('screen-start').classList.add('hidden');
+    document.getElementById('screen-over').classList.add('hidden');
+    state = 'play';
+}
+
+function jump() {
+    if (state === 'play') {
+        PLAYER.vy = JUMP_VEL;
+        sfxJump();
+
+        // Spawn engine thruster particles
+        for (let i = 0; i < 5; i++) {
+            thrusters.push({
+                x: PLAYER.x + 8,
+                y: PLAYER.y + PLAYER.h * 0.58 + (Math.random() - 0.5) * 8,
+                vx: -190 - Math.random() * 140,
+                vy: (Math.random() - 0.5) * 90,
+                size: 3 + Math.random() * 5,
+                life: 0.65
+            });
+        }
+    }
+}
+
+function gameOver() {
+    state = 'over';
+    flashAlpha = 0.65;
+    sfxCrash();
+
+    // Death explosion particles
+    for (let i = 0; i < 35; i++) {
+        const a = (Math.PI * 2 / 35) * i + Math.random() * 0.3;
+        const sp = 140 + Math.random() * 360;
+        particles.push({
+            x: PLAYER.x + PLAYER.w / 2,
+            y: PLAYER.y + PLAYER.h / 2,
+            vx: Math.cos(a) * sp,
+            vy: Math.sin(a) * sp,
+            life: 1.2,
+            size: 3 + Math.random() * 7,
+            red: Math.random() > 0.35
+        });
+    }
+
+    const isNew = score > bestScore;
+    if (isNew) {
+        bestScore = score;
+        localStorage.setItem('cx_best', bestScore);
+    }
+
+    const cfg = getLevelConfig(score);
+    const discount = calculateDiscount(score);
+
+    document.getElementById('hud').classList.add('hidden');
+    document.getElementById('go-score').textContent = score;
+    document.getElementById('go-best').textContent = bestScore;
+    document.getElementById('go-max-lvl').textContent = `REACHED LVL ${cfg.level}`;
+    document.getElementById('new-best-label').classList.toggle('hidden', !isNew);
+
+    // Update discount voucher
+    const discAmount = document.getElementById('go-discount-amount');
+    const discDesc = document.getElementById('go-discount-desc');
+    const claimBtn = document.getElementById('claim-btn');
+
+    if (discount > 0) {
+        discAmount.textContent = `CAD $${discount} OFF`;
+        discDesc.innerHTML = `Congratulations! You unlocked <strong>$${discount} CAD OFF</strong> any gaming computer purchase (every 10 pts = $1 off, max $50). Mention your score voucher at checkout or claim below!`;
+        claimBtn.classList.remove('hidden');
+    } else {
+        const ptsNeeded = 10 - score;
+        discAmount.textContent = `CAD $0 OFF`;
+        discDesc.innerHTML = `Every 10 points is $1 off a gaming computer purchase, maximum CAD$50.<br>You were only <strong>${ptsNeeded} point${ptsNeeded === 1 ? '' : 's'} away</strong> from $1 off! Try again to unlock your discount!`;
+        claimBtn.classList.add('hidden');
+    }
+
+    document.getElementById('screen-over').classList.remove('hidden');
+}
+
+// ----------------------------------------------------
+// GAME LOOP & NATURAL PHYSICS
+// ----------------------------------------------------
+let raf = null;
+
+function loop(ts) {
+    raf = requestAnimationFrame(loop);
+    const dt = Math.min((ts - lastTime) / 1000, 0.05);
+    lastTime = ts;
+
+    if (state === 'play') {
+        gameTime += dt;
+        update(dt);
+    }
+    render(dt);
+}
+
+function update(dt) {
+    const cfg = getLevelConfig(score);
+
+    // Check for level up
+    if (cfg.level > currentLevel) {
+        currentLevel = cfg.level;
+        announceLevelUp(currentLevel, cfg.name);
+    }
+
+    // Natural Gravity & Velocity
+    PLAYER.vy = Math.min(PLAYER.vy + GRAVITY * dt, MAX_FALL);
+    PLAYER.y += PLAYER.vy * dt;
+
+    // Super Natural, Smooth Rotation (responsive to velocity)
+    const targetAngle = PLAYER.vy < 0 
+        ? -20 * (Math.PI / 180) 
+        : Math.min(PLAYER.vy / MAX_FALL, 1) * 38 * (Math.PI / 180);
+    // Framerate-independent smooth exponential damping
+    const lerpRate = 1 - Math.exp(-12 * dt);
+    PLAYER.angle += (targetAngle - PLAYER.angle) * lerpRate;
+
+    // Fluid time-based sprite frame cycling (no glitch/twitch!)
+    PLAYER.animTimer += dt;
+    if (PLAYER.animTimer >= PLAYER.FRAME_INTERVAL) {
+        PLAYER.animTimer -= PLAYER.FRAME_INTERVAL;
+        PLAYER.frameIdx = (PLAYER.frameIdx + 1) % FRAME_COUNT;
+    }
+
+    // Smooth engine exhaust particles
+    if (Math.random() < 0.4) {
+        thrusters.push({
+            x: PLAYER.x + 8,
+            y: PLAYER.y + PLAYER.h * 0.58 + (Math.random() - 0.5) * 6,
+            vx: -140 - Math.random() * 80,
+            vy: (Math.random() - 0.5) * 35,
+            size: 2 + Math.random() * 3,
+            life: 0.45
+        });
+    }
+
+    // Ceiling & floor collision
+    if (PLAYER.y + PLAYER.h >= H - 10 || PLAYER.y <= -PLAYER.h * 0.4) {
+        gameOver();
+        return;
+    }
+
+    // Obstacle generation
+    pipeTimer -= dt;
+    if (pipeTimer <= 0) {
+        pipeTimer = cfg.interval;
+        const gapH = cfg.gapRatio * H;
+        const minY = H * 0.12;
+        const maxY = H * 0.88 - gapH;
+        const baseGapY = minY + Math.random() * (maxY - minY);
+
+        pipes.push({
+            x: W + 60,
+            baseGapY,
+            gapY: baseGapY,
+            gapH,
+            scored: false,
+            phase: Math.random() * Math.PI * 2,
+            isOscillating: cfg.oscillating && Math.random() > 0.25,
+            oscSpeed: cfg.oscSpeed || 2,
+            oscAmp: cfg.oscAmp || 35
+        });
+    }
+
+    // Pipe movement, oscillation & audio scoring
+    pipes.forEach(p => {
+        p.x -= cfg.speed * dt;
+
+        // Vertical oscillation for higher levels!
+        if (p.isOscillating) {
+            p.gapY = p.baseGapY + Math.sin(gameTime * p.oscSpeed + p.phase) * p.oscAmp;
+            p.gapY = Math.max(H * 0.08, Math.min(H * 0.92 - p.gapH, p.gapY));
+        }
+
+        // Scoring when passing through pillar!
+        if (!p.scored && p.x + PIPE_W < PLAYER.x + PLAYER.w * 0.3) {
+            p.scored = true;
+            score++;
+
+            // Check if a dollar was earned: every 10 points up to 500
+            const currentDiscount = calculateDiscount(score);
+            if (currentDiscount > lastAwardedDiscount && currentDiscount <= 50) {
+                lastAwardedDiscount = currentDiscount;
+                triggerChaChingBanner(currentDiscount);
+            } else {
+                // Sound effect for every other pillar passed (+1 point)
+                sfxPillarPoint();
+            }
+
+            updateHUD();
+        }
+    });
+
+    // Remove offscreen pipes
+    pipes = pipes.filter(p => p.x + PIPE_W > -40);
+
+    // Hitbox collision (Fair, tight hitbox centered on the robot body)
+    const hitW = PLAYER.w * 0.68;
+    const hitH = PLAYER.h * 0.65;
+    const hitX = PLAYER.x + (PLAYER.w - hitW) * 0.5;
+    const hitY = PLAYER.y + (PLAYER.h - hitH) * 0.5;
+
+    for (const p of pipes) {
+        if (hitX < p.x + PIPE_W && hitX + hitW > p.x) {
+            if (hitY < p.gapY || hitY + hitH > p.gapY + p.gapH) {
+                gameOver();
+                return;
+            }
+        }
+    }
+
+    // Background parallax scroll
+    bgX -= cfg.speed * 0.22 * dt;
+    if (bgImg.naturalWidth) {
+        const bw = bgImg.naturalWidth / (bgImg.naturalHeight / H);
+        if (bgX <= -bw) bgX += bw;
+    }
+
+    // Update particles & floats
+    particles.forEach(p => {
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vy += 450 * dt;
+        p.life -= dt * 1.3;
+    });
+    particles = particles.filter(p => p.life > 0);
+
+    thrusters.forEach(t => {
+        t.x += t.vx * dt;
+        t.y += t.vy * dt;
+        t.life -= dt * 2.2;
+    });
+    thrusters = thrusters.filter(t => t.life > 0);
+
+    coinFloats.forEach(c => {
+        c.y += c.vy * dt;
+        c.life -= dt * 1.1;
+    });
+    coinFloats = coinFloats.filter(c => c.life > 0);
+
+    flashAlpha = Math.max(0, flashAlpha - dt * 2.5);
+}
+
+// ----------------------------------------------------
+// RENDERING
+// ----------------------------------------------------
+function render() {
+    ctx.clearRect(0, 0, W, H);
+
+    // 1. Parallax Cyber Cityscape Background
+    if (bgImg.naturalWidth && bgImg.naturalHeight) {
+        const r = bgImg.naturalHeight / H;
+        const sw = bgImg.naturalWidth / r;
+        let dx = bgX % sw;
+        if (dx > 0) dx -= sw;
+        for (let x = dx; x < W + sw; x += sw) {
+            ctx.drawImage(bgImg, x, 0, sw, H);
+        }
+    } else {
+        ctx.fillStyle = '#07090d';
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    // 2. Obstacles (Neon Laser Beams)
+    pipes.forEach(p => drawPipe(p));
+
+    // 3. Engine Thruster Particles
+    thrusters.forEach(t => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, t.life);
+        ctx.fillStyle = Math.random() > 0.4 ? '#ff2b3d' : '#ffea70';
+        ctx.shadowColor = '#ff2b3d';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.size * t.life, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    });
+
+    // 4. Player Character (Authentic Aspect Ratio, Big & Crisp, Perfectly Centered)
+    if (state === 'play' || state === 'over') {
+        drawPlayer();
+    }
+
+    // 5. Floating Cha-Ching Gold Badges
+    coinFloats.forEach(c => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, c.life);
+        ctx.font = '900 18px "Montserrat", sans-serif';
+        ctx.fillStyle = '#ffd700';
+        ctx.shadowColor = '#ffd700';
+        ctx.shadowBlur = 15;
+        ctx.textAlign = 'center';
+        ctx.fillText(c.text, c.x, c.y);
+        ctx.restore();
+    });
+
+    // 6. Explosion Particles
+    particles.forEach(p => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.red ? `rgba(230,40,59,${p.life})` : `rgba(255,255,255,${p.life})`;
+        ctx.shadowColor = p.red ? '#ff1a2b' : '#fff';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    });
+
+    // 7. Impact Screen Flash
+    if (flashAlpha > 0) {
+        ctx.fillStyle = `rgba(166,30,43,${flashAlpha})`;
+        ctx.fillRect(0, 0, W, H);
+    }
+}
+
+function drawPipe(p) {
+    drawBeam(p.x, 0, PIPE_W, p.gapY);
+    drawBeam(p.x, p.gapY + p.gapH, PIPE_W, H - (p.gapY + p.gapH));
+    drawBeamEdge(p.x, p.gapY, PIPE_W, 'bottom', p.isOscillating);
+    drawBeamEdge(p.x, p.gapY + p.gapH, PIPE_W, 'top', p.isOscillating);
+}
+
+function drawBeam(x, y, w, h) {
+    if (h <= 0) return;
+    const g = ctx.createLinearGradient(x, 0, x + w, 0);
+    g.addColorStop(0, '#0c0e14');
+    g.addColorStop(0.25, '#1e0508');
+    g.addColorStop(0.75, '#28070b');
+    g.addColorStop(1, '#0c0e14');
+    ctx.fillStyle = g;
+    ctx.fillRect(x, y, w, h);
+
+    // Neon glowing core & edges
+    ctx.fillStyle = 'rgba(230,40,59,0.95)';
+    ctx.fillRect(x, y, 3.5, h);
+    ctx.fillStyle = 'rgba(230,40,59,0.7)';
+    ctx.fillRect(x + w - 3.5, y, 3.5, h);
+    ctx.fillStyle = 'rgba(255,80,100,0.5)';
+    ctx.fillRect(x + w / 2 - 2, y, 4, h);
+}
+
+function drawBeamEdge(x, y, w, side, isOsc) {
+    const gh = 26;
+    const gy = side === 'bottom' ? y - gh : y;
+    const g = ctx.createLinearGradient(0, gy, 0, gy + gh);
+    const color = isOsc ? 'rgba(255,215,0,0.85)' : 'rgba(230,40,59,0.85)';
+    
+    if (side === 'bottom') {
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, color);
+    } else {
+        g.addColorStop(0, color);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+    }
+    ctx.fillStyle = g;
+    ctx.fillRect(x - 12, gy, w + 24, gh);
+}
+
+function drawPlayer() {
+    if (!spriteImg.naturalWidth) return;
+    const fw = Math.floor(spriteImg.naturalWidth / FRAME_COUNT);
+    const fh = spriteImg.naturalHeight;
+    const cx = PLAYER.x + PLAYER.w / 2;
+    const cy = PLAYER.y + PLAYER.h / 2;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(PLAYER.angle);
+
+    // Dynamic Crimson Neon Aura
+    ctx.shadowColor = 'rgba(230,40,59,0.85)';
+    ctx.shadowBlur = 24;
+
+    // Draw perfectly aligned, rock-solid sprite frame
+    ctx.drawImage(
+        spriteImg,
+        fw * PLAYER.frameIdx, 0, fw, fh,
+        -PLAYER.w / 2, -PLAYER.h / 2, PLAYER.w, PLAYER.h
+    );
+    ctx.restore();
+}
+
+// ----------------------------------------------------
+// USER INPUT & EVENT HANDLERS
+// ----------------------------------------------------
+document.addEventListener('keydown', e => {
+    if (['Space', 'ArrowUp', 'KeyW'].includes(e.code)) {
+        e.preventDefault();
+        jump();
+    }
+});
+
+document.getElementById('game-wrap').addEventListener('pointerdown', e => {
+    if (e.target.closest('button') || e.target.closest('a')) return;
+    jump();
+}, { passive: true });
+
+// ----------------------------------------------------
+// PROMO DISCOUNT CLAIM & SOCIAL SHARING
+// ----------------------------------------------------
+function claimDiscount() {
+    const discount = calculateDiscount(score);
+    const text = `Hi CoreX Montreal! I scored ${score} in CoreX Run (Level ${currentLevel}) and unlocked $${discount} CAD off my gaming computer purchase! I would like to apply this to my PC order.`;
+    const waUrl = `https://wa.me/14505180296?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+}
+
+function shareGame() {
+    const text = 'Every 10 points is $1 off a gaming PC purchase at CoreX Montreal (max CAD$50)! Can you beat the neon grid in CoreX Run?';
+    doShare(text);
+}
+
+function shareScore() {
+    const discount = calculateDiscount(score);
+    const discText = discount > 0 ? ` and unlocked $${discount} CAD off my gaming PC` : '';
+    const text = `I just scored ${score} in CoreX Run${discText}! Think you can beat my score? Every 10 points is $1 off a gaming computer at CoreX Montreal!`;
+    doShare(text);
+}
+
+function doShare(text) {
+    const url = window.location.href.split('?')[0];
+    if (navigator.share) {
+        navigator.share({
+            title: 'CoreX Run | Dodge the Grid',
+            text: text,
+            url: url
+        }).catch(() => fallbackCopy(text + '\n' + url));
+    } else {
+        fallbackCopy(text + '\n' + url);
+    }
+}
+
+function fallbackCopy(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+            .then(() => showToast('Score & Challenge link copied!'))
+            .catch(() => showToast('Share: ' + window.location.href));
+    } else {
+        showToast('Share: ' + window.location.href);
+    }
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Initial setup
+resize();
+lastTime = performance.now();
+if (assetsReady < 2) {
+    requestAnimationFrame(function checkReady(ts) {
+        lastTime = ts;
+        if (assetsReady < 2) requestAnimationFrame(checkReady);
+    });
+}
+</script>
+</body>
+</html>
