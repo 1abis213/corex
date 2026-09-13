@@ -29,7 +29,7 @@
         "@type": "LocalBusiness",
         "name": "CoreX Montreal",
         "description": "Premium custom PC building, hardware repairs, GPU/CPU repasting, upgrades, and diagnostics in Montreal.",
-        "image": "assets/corex_logo.png",
+        "image": "https://corexmontreal.com/assets/corex_logo.png",
         "url": "https://corexmontreal.com",
         "telephone": "+1-450-518-0296",
         "address": {
@@ -549,6 +549,62 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 28px;
+        }
+
+        .catalog-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: var(--cx-card-bg);
+            border: 1px solid var(--cx-border-subtle);
+            color: var(--cx-text-gray);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-btn:hover {
+            border-color: var(--cx-red-border);
+            color: #fff;
+        }
+        .filter-btn.active {
+            background: var(--cx-red);
+            border-color: var(--cx-red);
+            color: #fff;
+        }
+
+        .catalog-loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--cx-text-muted);
+            font-size: 14px;
+        }
+        .catalog-loading .spinner {
+            width: 32px; height: 32px;
+            border: 3px solid var(--cx-border-subtle);
+            border-top-color: var(--cx-red);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .product-card.sold-out {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .product-card.sold-out .card-badge {
+            background: #555;
+            border-color: #777;
         }
 
         .product-card {
@@ -2031,7 +2087,22 @@
                 <p class="section-desc" data-i18n="catalog_desc">Hand-assembled, thermally stressed, and calibrated in Montreal. Select a build to view full technical specifications or contact us immediately.</p>
             </div>
 
-            <div class="product-grid">
+            <div class="catalog-filters" id="catalogFilters">
+                <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All Builds</button>
+                <button class="filter-btn" data-filter="budget" data-i18n="filter_budget">Budget</button>
+                <button class="filter-btn" data-filter="build" data-i18n="filter_builds">Builds</button>
+                <button class="filter-btn" data-filter="premium" data-i18n="filter_premium">Premium</button>
+            </div>
+
+            <div class="catalog-loading" id="catalogLoading">
+                <div class="spinner"></div>
+                Loading inventory...
+            </div>
+
+            <div class="product-grid" id="productGrid" style="display:none;"></div>
+
+            <!-- Fallback: static cards shown if GS fetch fails -->
+            <div class="product-grid" id="productGridFallback">
                 
                 <!-- PRODUCT 1: CORE X TITAN 4060 TI -->
                 <div class="product-card" onclick="openBuildModal(0)" title="Click to view full specs and details">
@@ -2165,12 +2236,12 @@
                     </div>
                 </div>
 
-            </div>
+            </div><!-- end fallback grid -->
         </div>
     </section>
 
     <!-- ==========================================================================
-         SECTION 03: SERVICES & EXPERTISE (REQUESTED EXACT LIST)
+         SERVICES
          ========================================================================== -->
     <section class="section-wrap services-section" id="services">
         <div class="container">
@@ -3407,6 +3478,7 @@
                 nav_home: "Home", nav_builders: "Builders", nav_services: "Services",
                 nav_about: "About", nav_reviews: "Reviews", nav_gallery: "Gallery", nav_compare: "Compare", nav_faq: "FAQ",
                 nav_contact: "Contact", nav_contact_us: "Contact Us",
+                filter_all: "All Builds", filter_budget: "Budget", filter_builds: "Builds", filter_premium: "Premium",
                 hero_title: "BUILD YOUR ULTIMATE RIG IN MONTREAL",
                 hero_subtitle: "CoreX: Powering Quebec's Gamers.",
                 hero_explore: "EXPLORE STORE BUILDS", hero_play: "🎮 PLAY COREX RUN",
@@ -3508,6 +3580,7 @@
                 nav_home: "Accueil", nav_builders: "Configurations", nav_services: "Services",
                 nav_about: "À propos", nav_reviews: "Avis", nav_gallery: "Galerie", nav_compare: "Comparer", nav_faq: "FAQ",
                 nav_contact: "Contact", nav_contact_us: "Nous joindre",
+                filter_all: "Toutes", filter_budget: "Économique", filter_builds: "Configurations", filter_premium: "Premium",
                 hero_title: "CRÉEZ VOTRE PC ULTIMATE À MONTRÉAL",
                 hero_subtitle: "CoreX : L'énergie des gamers du Québec.",
                 hero_explore: "VOIR LES CONFIGURATIONS", hero_play: "🎮 JOUER À COREX RUN",
@@ -3546,7 +3619,7 @@
                 review1_name: "Marc-André L.", review2_name: "Sarah K.", review3_name: "Jean-François D.",
                 stat_rating: "Note Google", stat_pcs: "PC Vendus", stat_clients: "Clients Satisfaits", stat_repair: "Réparations Rapides",
                 about_tag: "L'ATELIER PC DE MONTRÉAL", about_title: "POURQUOI CHOISIR COREX",
-                about_desc: "Nous ne sommes pas un grand magasin. Nous sommes des gamers montréalais qui construisent pour des gamers montréalais — avec une vrai expertise et un service personnalisé.",
+                about_desc: "Nous ne sommes pas un grand magasin. Nous sommes des gamers montréalais qui construisent pour des gamers montréalais — avec une vraie expertise et un service personnalisé.",
                 about_h3: "Construit Par des Gamers, Pour des Gamers",
                 about_p1: "CoreX Montréal est un atelier PC spécialisé au cœur de Chabanel. Nous assemblons chaque PC sur mesure, effectuons des tests thermiques méticuleux et nous assurons que chaque système est optimisé pour des performances maximales.",
                 about_p2: "Chaque build vient avec une installation propre de Windows 11 (sans bloatware), les derniers pilotes, optimisation du BIOS et une garantie atelier de 30 jours. Nous garantissons notre travail.",
@@ -3754,6 +3827,169 @@
                 perf: "1080p Ultra & 1440p Gaming (Rust, Warzone, Rocket League, Minecraft Shaders)"
             }
         ];
+
+        // --- GOOGLE SHEETS INVENTORY MANAGER ---
+        const GS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vToi8KrW0_XtLLmxzI1Y9BzEcBk26shf2Ov4yXo-r-H8xqGyY3hwQGtv6ARTDLVPc7lt7ksDzdz_PzY/pub?gid=0&single=true&output=csv';
+        let ALL_PRODUCTS = [];
+        let activeFilter = 'all';
+
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            return lines.slice(1).map(line => {
+                const vals = line.split(',');
+                const obj = {};
+                headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
+                return obj;
+            }).filter(row => row.name);
+        }
+
+        function renderProductCard(p, index) {
+            const isSold = p.status === 'sold';
+            const isReserved = p.status === 'reserved';
+            const badgeText = isSold ? 'SOLD' : isReserved ? 'RESERVED' : (p.category || '').toUpperCase();
+            const specsLine = [p.cpu, p.gpu, p.ram, p.storage].filter(Boolean).join(' • ');
+            const priceDisplay = p.price ? (p.price.startsWith('$') ? p.price + ' CAD' : '$' + p.price + ' CAD') : '';
+
+            return `
+                <div class="product-card${isSold ? ' sold-out' : ''}" data-category="${p.category || 'build'}" onclick="openGSBuildModal(${index})" title="Click to view full specs and details">
+                    <span class="card-badge">${badgeText}</span>
+                    <div class="card-img-wrap">
+                        <img src="${p.image_url || 'assets/corex_logo.png'}" alt="${p.name}" loading="lazy">
+                    </div>
+                    <h3 class="card-title">${p.name}</h3>
+                    <div class="card-specs">${specsLine}</div>
+                    <div class="card-price">${priceDisplay}</div>
+                    <div class="card-actions">
+                        <button class="btn-uiverse btn-view-specs" onclick="event.stopPropagation(); openGSBuildModal(${index})">
+                            <span data-i18n="btn_view_specs">VIEW SPECS</span>
+                        </button>
+                        <button class="btn-uiverse btn-uiverse-red btn-contact-buy" onclick="event.stopPropagation(); openContactModal('${p.name} (${priceDisplay})')">
+                            <span data-i18n="btn_order">ORDER</span>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        function renderProducts(filter) {
+            activeFilter = filter || 'all';
+            const grid = document.getElementById('productGrid');
+            const filtered = activeFilter === 'all'
+                ? ALL_PRODUCTS
+                : ALL_PRODUCTS.filter(p => p.category === activeFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--cx-text-muted);grid-column:1/-1;padding:40px;">No products in this category yet.</p>';
+            } else {
+                grid.innerHTML = filtered.map((p, i) => renderProductCard(p, ALL_PRODUCTS.indexOf(p))).join('');
+            }
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === activeFilter);
+            });
+
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo('#productGrid .product-card',
+                    { y: 30, autoAlpha: 0 },
+                    { y: 0, autoAlpha: 1, stagger: 0.08, duration: 0.5, ease: 'power2.out' }
+                );
+            }
+        }
+
+        function openGSBuildModal(index) {
+            const p = ALL_PRODUCTS[index];
+            if (!p) return;
+            document.getElementById('modalItemTitle').textContent = p.name;
+            document.getElementById('modalItemSubtitle').textContent = p.category || '';
+            document.getElementById('modalItemPrice').textContent = p.price ? (p.price.startsWith('$') ? p.price + ' CAD' : '$' + p.price + ' CAD') : '';
+            document.getElementById('modalPcImg').src = p.image_url || 'assets/corex_logo.png';
+            document.getElementById('modalPcImg').alt = p.name;
+            document.getElementById('modalPerfText').textContent = '';
+
+            document.getElementById('specCpu').textContent = p.cpu || '—';
+            document.getElementById('specGpu').textContent = p.gpu || '—';
+            document.getElementById('specRam').textContent = p.ram || '—';
+            document.getElementById('specStorage').textContent = p.storage || '—';
+            document.getElementById('specMobo').textContent = '—';
+            document.getElementById('specPsu').textContent = '—';
+            document.getElementById('specCooling').textContent = '—';
+            document.getElementById('specCase').textContent = '—';
+            document.getElementById('specOs').textContent = '—';
+
+            const priceDisplay = p.price ? (p.price.startsWith('$') ? p.price + ' CAD' : '$' + p.price + ' CAD') : '';
+            const msg = encodeURIComponent(`Hello CoreX Montreal, I am interested in the ${p.name} (${priceDisplay}). Is this build available for local testing/pickup in Montreal?`);
+            document.getElementById('modalLinkWa').href = `https://wa.me/${PHONE_NUMBER}?text=${msg}`;
+            document.getElementById('modalLinkSms').href = `sms:${PHONE_NUMBER}?&body=${msg}`;
+
+            const modal = document.getElementById('specModal');
+            modal.classList.add('active');
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo('#specModal .modal-box',
+                    { scale: 0.88, opacity: 0, y: 30 },
+                    { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }
+                );
+            }
+        }
+
+        async function initInventory() {
+            const loading = document.getElementById('catalogLoading');
+            const grid = document.getElementById('productGrid');
+            const fallback = document.getElementById('productGridFallback');
+
+            try {
+                const res = await fetch(GS_CSV_URL + '&_=' + Date.now());
+                if (!res.ok) throw new Error('Fetch failed');
+                const csv = await res.text();
+                const rows = parseCSV(csv);
+
+                if (rows.length === 0) throw new Error('No data');
+
+                ALL_PRODUCTS = rows;
+                loading.style.display = 'none';
+                grid.style.display = '';
+                fallback.style.display = 'none';
+                renderProducts('all');
+
+                document.getElementById('catalogFilters').addEventListener('click', e => {
+                    const btn = e.target.closest('.filter-btn');
+                    if (btn) renderProducts(btn.dataset.filter);
+                });
+            } catch (e) {
+                // Fallback to static PRODUCTS
+                loading.style.display = 'none';
+                fallback.style.display = '';
+                grid.style.display = 'none';
+
+                ALL_PRODUCTS = PRODUCTS.map(p => ({
+                    name: p.name,
+                    price: p.price.replace(' CAD', ''),
+                    cpu: p.cpu,
+                    gpu: p.gpu,
+                    ram: p.ram,
+                    storage: p.storage,
+                    category: 'build',
+                    image_url: p.img,
+                    status: 'available'
+                }));
+
+                fallback.innerHTML = ALL_PRODUCTS.map((p, i) => renderProductCard(p, i)).join('');
+
+                document.getElementById('catalogFilters').addEventListener('click', e => {
+                    const btn = e.target.closest('.filter-btn');
+                    if (btn) {
+                        activeFilter = btn.dataset.filter;
+                        const filtered = activeFilter === 'all' ? ALL_PRODUCTS : ALL_PRODUCTS.filter(p => p.category === activeFilter);
+                        fallback.innerHTML = filtered.length
+                            ? filtered.map((p, i) => renderProductCard(p, ALL_PRODUCTS.indexOf(p))).join('')
+                            : '<p style="text-align:center;color:var(--cx-text-muted);grid-column:1/-1;padding:40px;">No products in this category yet.</p>';
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === activeFilter));
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initInventory);
 
         // --- GSAP PRELOADER & SCROLLTRIGGER ORCHESTRATION ---
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
