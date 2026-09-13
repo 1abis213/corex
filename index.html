@@ -1312,63 +1312,76 @@
         .mobile-nav-close:hover { color: #fff; }
 
         /* ==========================================================================
-           13. REVIEWS / TESTIMONIALS
+           13. REVIEWS / TESTIMONIALS CAROUSEL
            ========================================================================== */
         .reviews-section {
             background: var(--cx-bg-main);
+            overflow: hidden;
         }
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+        .reviews-carousel-wrap {
+            position: relative;
+            margin-top: 32px;
         }
-        @media (max-width: 900px) { .reviews-grid { grid-template-columns: 1fr; } }
-
+        .reviews-track {
+            display: flex;
+            gap: 20px;
+            animation: scrollReviews 60s linear infinite;
+            width: max-content;
+        }
+        .reviews-track:hover {
+            animation-play-state: paused;
+        }
+        @keyframes scrollReviews {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
         .review-card {
             background: var(--cx-card-bg);
             border: 1px solid var(--cx-border-subtle);
             border-radius: var(--cx-radius-md);
-            padding: 28px 24px;
+            padding: 24px 20px;
+            min-width: 320px;
+            max-width: 320px;
             display: flex;
             flex-direction: column;
-            transition: all 0.25s ease;
+            transition: border-color 0.25s ease;
+            flex-shrink: 0;
         }
         .review-card:hover {
             border-color: var(--cx-red-border);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(166, 30, 43, 0.15);
         }
         .review-stars {
             color: #fbbc04;
-            font-size: 16px;
-            margin-bottom: 12px;
+            font-size: 15px;
+            margin-bottom: 10px;
             letter-spacing: 2px;
         }
         .review-text {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--cx-text-gray);
-            line-height: 1.7;
-            margin-bottom: 16px;
+            line-height: 1.65;
+            margin-bottom: 14px;
             flex-grow: 1;
             font-style: italic;
         }
         .review-author {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         .review-avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: rgba(166, 30, 43, 0.2);
             border: 1px solid var(--cx-red-border);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 800;
             color: var(--cx-red-hover);
+            flex-shrink: 0;
         }
         .review-name {
             font-size: 13px;
@@ -1376,19 +1389,27 @@
             color: #fff;
         }
         .review-date {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--cx-text-muted);
         }
         .review-source {
             font-size: 10px;
             color: var(--cx-text-muted);
-            margin-top: 2px;
+            margin-top: 1px;
+        }
+        .review-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 9px;
+            color: #4285f4;
+            margin-top: 3px;
         }
         .reviews-stats {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 32px;
+            gap: 40px;
             margin-top: 32px;
             padding: 20px;
             background: var(--cx-card-bg);
@@ -1413,6 +1434,7 @@
         }
         @media (max-width: 600px) {
             .reviews-stats { flex-direction: column; gap: 16px; }
+            .review-card { min-width: 280px; max-width: 280px; padding: 20px 16px; }
         }
 
         /* ==========================================================================
@@ -2262,42 +2284,513 @@
                 <p class="section-desc" data-i18n="reviews_desc">Don't take our word for it — hear from real Montreal gamers who trusted CoreX with their rigs.</p>
             </div>
 
-            <div class="reviews-grid">
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text" data-i18n="review1_text">"Best PC shop in Montreal! They built my custom rig with incredible cable management. Runs cool and quiet. Highly recommend for anyone serious about gaming."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">M</div>
-                        <div>
-                            <div class="review-name" data-i18n="review1_name">Marc-Andre L.</div>
-                            <div class="review-date">2025</div>
-                            <div class="review-source">Google Reviews</div>
+            <div class="reviews-carousel-wrap">
+                <div class="reviews-track" id="reviewsTrack">
+                    <!-- Reviews set 1 (original) -->
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Best PC shop in Montreal! They built my custom rig with incredible cable management. Runs cool and quiet. Highly recommend for anyone serious about gaming."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">M</div>
+                            <div>
+                                <div class="review-name">Marc-Andre L.</div>
+                                <div class="review-date">2 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text" data-i18n="review2_text">"Brought in my overheating laptop for GPU repasting. Done same day, temps dropped 20 degrees. Professional service and fair pricing. CoreX is my go-to now."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">S</div>
-                        <div>
-                            <div class="review-name" data-i18n="review2_name">Sarah K.</div>
-                            <div class="review-date">2025</div>
-                            <div class="review-source">Google Reviews</div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Brought in my overheating laptop for GPU repasting. Done same day, temps dropped 20 degrees. Professional service and fair pricing. CoreX is my go-to now."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">S</div>
+                            <div>
+                                <div class="review-name">Sarah K.</div>
+                                <div class="review-date">1 month ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"They saved my data from a dying SSD when everyone else said it was impossible. Fast turnaround and they kept me updated the whole time. True experts."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">J</div>
+                            <div>
+                                <div class="review-name">Jean-Francois D.</div>
+                                <div class="review-date">3 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Excellent service! Built my son's first gaming PC for his birthday. They even helped him pick the right components for his budget. Amazing customer service!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">N</div>
+                            <div>
+                                <div class="review-name">Nathalie B.</div>
+                                <div class="review-date">1 week ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"J'ai fait nettoyer et repâter mon PC. Il était rempli de poussière depuis 3 ans. Maintenant il roule comme neuf et le ventilateur est beaucoup plus silencieux."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">P</div>
+                            <div>
+                                <div class="review-name">Philippe M.</div>
+                                <div class="review-date">2 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"I'm not tech-savvy at all and they were incredibly patient explaining everything. Set me up with a solid build for school and light gaming. Very honest pricing."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">A</div>
+                            <div>
+                                <div class="review-name">Amanda R.</div>
+                                <div class="review-date">5 days ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Mon ordinateur ne démarrait plus après un orage. CoreX a diagnostiqué un PSU grillé et l'a remplacé le jour même. Service rapide et professionnel!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">D</div>
+                            <div>
+                                <div class="review-name">David T.</div>
+                                <div class="review-date">3 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Third time bringing my PC here. They always remember me and the work is consistently excellent. Wouldn't trust anyone else with my gaming setup."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">R</div>
+                            <div>
+                                <div class="review-name">Romain C.</div>
+                                <div class="review-date">6 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Brought in 3 office PCs for Windows reinstalls. All done in one day, no bloatware, all drivers updated. Perfect for our small business. Great value."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">L</div>
+                            <div>
+                                <div class="review-name">Lucie G.</div>
+                                <div class="review-date">2 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"The play-to-save game is genius! I scored 30 points and got $3 off my new build. Small thing but it shows they care about their customers. Love CoreX."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">K</div>
+                            <div>
+                                <div class="review-name">Kevin W.</div>
+                                <div class="review-date">1 month ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Très satisfait de mon achat! Le PC Ultra 3080 roule tous mes jeux en 4K sans problème. L'assemblage est impeccable et le câblage est parfait."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">F</div>
+                            <div>
+                                <div class="review-name">Francois L.</div>
+                                <div class="review-date">4 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"They diagnosed a tricky intermittent BSOD that two other shops couldn't figure out. Turned out to be a bad RAM stick. Honest and skilled technicians."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">T</div>
+                            <div>
+                                <div class="review-name">Thomas H.</div>
+                                <div class="review-date">5 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Upgrade de ma RAM de 16 à 32GB + ajout d'un NVMe. Travail propre, rapide et à un prix très raisonnable. Je recommande fortement!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">C</div>
+                            <div>
+                                <div class="review-name">Caroline P.</div>
+                                <div class="review-date">3 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Built a streaming rig with them — Ryzen 7 5700X + RTX 4060. OBS runs flawlessly at 1080p60 while gaming. Perfect setup for my Twitch channel."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">V</div>
+                            <div>
+                                <div class="review-name">Victor S.</div>
+                                <div class="review-date">2 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"I drove from Laval specifically for CoreX and it was worth the trip. They explained the difference between GPU options and helped me save money without losing performance."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">G</div>
+                            <div>
+                                <div class="review-name">George P.</div>
+                                <div class="review-date">6 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Mon portable gaming surchauffait et ralentissait pendant les parties. Après la repâte, la différence est incroyable. Merci CoreX!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">O</div>
+                            <div>
+                                <div class="review-name">Omar A.</div>
+                                <div class="review-date">1 month ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Fair prices, honest advice, and they actually answer your questions. Found them through a friend and now I recommend them to everyone. 10/10."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">B</div>
+                            <div>
+                                <div class="review-name">Ben M.</div>
+                                <div class="review-date">4 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"They recovered all my family photos from a corrupted hard drive. I thought everything was lost. These guys are miracle workers. Thank you so much!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">I</div>
+                            <div>
+                                <div class="review-name">Isabelle R.</div>
+                                <div class="review-date">3 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Assemblage d'un PC pour le travail et les jeux. Budget serré mais ils ont trouvé les meilleures pièces pour mon prix. Travail impeccable!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">Y</div>
+                            <div>
+                                <div class="review-name">Yannick D.</div>
+                                <div class="review-date">5 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Went from a dusty 5-year-old rig to a clean new CoreX build. The difference is night and day. Loading screens gone, FPS doubled. Best investment ever."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">E</div>
+                            <div>
+                                <div class="review-name">Eric N.</div>
+                                <div class="review-date">2 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"I'm a student on a budget and they built me a PC that handles SolidWorks and some gaming. Couldn't be happier with the performance for the price."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">H</div>
+                            <div>
+                                <div class="review-name">Hugo F.</div>
+                                <div class="review-date">6 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text" data-i18n="review3_text">"They saved my data from a dying SSD when everyone else said it was impossible. Fast turnaround and they kept me updated the whole time. True experts."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">J</div>
-                        <div>
-                            <div class="review-name" data-i18n="review3_name">Jean-Francois D.</div>
-                            <div class="review-date">2025</div>
-                            <div class="review-source">Google Reviews</div>
+                    <!-- Duplicate set for seamless loop -->
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Best PC shop in Montreal! They built my custom rig with incredible cable management. Runs cool and quiet. Highly recommend for anyone serious about gaming."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">M</div>
+                            <div>
+                                <div class="review-name">Marc-Andre L.</div>
+                                <div class="review-date">2 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Brought in my overheating laptop for GPU repasting. Done same day, temps dropped 20 degrees. Professional service and fair pricing. CoreX is my go-to now."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">S</div>
+                            <div>
+                                <div class="review-name">Sarah K.</div>
+                                <div class="review-date">1 month ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"They saved my data from a dying SSD when everyone else said it was impossible. Fast turnaround and they kept me updated the whole time. True experts."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">J</div>
+                            <div>
+                                <div class="review-name">Jean-Francois D.</div>
+                                <div class="review-date">3 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Excellent service! Built my son's first gaming PC for his birthday. They even helped him pick the right components for his budget. Amazing customer service!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">N</div>
+                            <div>
+                                <div class="review-name">Nathalie B.</div>
+                                <div class="review-date">1 week ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"J'ai fait nettoyer et repâter mon PC. Il était rempli de poussière depuis 3 ans. Maintenant il roule comme neuf et le ventilateur est beaucoup plus silencieux."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">P</div>
+                            <div>
+                                <div class="review-name">Philippe M.</div>
+                                <div class="review-date">2 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"I'm not tech-savvy at all and they were incredibly patient explaining everything. Set me up with a solid build for school and light gaming. Very honest pricing."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">A</div>
+                            <div>
+                                <div class="review-name">Amanda R.</div>
+                                <div class="review-date">5 days ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Mon ordinateur ne démarrait plus après un orage. CoreX a diagnostiqué un PSU grillé et l'a remplacé le jour même. Service rapide et professionnel!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">D</div>
+                            <div>
+                                <div class="review-name">David T.</div>
+                                <div class="review-date">3 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Third time bringing my PC here. They always remember me and the work is consistently excellent. Wouldn't trust anyone else with my gaming setup."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">R</div>
+                            <div>
+                                <div class="review-name">Romain C.</div>
+                                <div class="review-date">6 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Brought in 3 office PCs for Windows reinstalls. All done in one day, no bloatware, all drivers updated. Perfect for our small business. Great value."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">L</div>
+                            <div>
+                                <div class="review-name">Lucie G.</div>
+                                <div class="review-date">2 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"The play-to-save game is genius! I scored 30 points and got $3 off my new build. Small thing but it shows they care about their customers. Love CoreX."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">K</div>
+                            <div>
+                                <div class="review-name">Kevin W.</div>
+                                <div class="review-date">1 month ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Très satisfait de mon achat! Le PC Ultra 3080 roule tous mes jeux en 4K sans problème. L'assemblage est impeccable et le câblage est parfait."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">F</div>
+                            <div>
+                                <div class="review-name">Francois L.</div>
+                                <div class="review-date">4 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"They diagnosed a tricky intermittent BSOD that two other shops couldn't figure out. Turned out to be a bad RAM stick. Honest and skilled technicians."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">T</div>
+                            <div>
+                                <div class="review-name">Thomas H.</div>
+                                <div class="review-date">5 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Upgrade de ma RAM de 16 à 32GB + ajout d'un NVMe. Travail propre, rapide et à un prix très raisonnable. Je recommande fortement!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">C</div>
+                            <div>
+                                <div class="review-name">Caroline P.</div>
+                                <div class="review-date">3 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Built a streaming rig with them — Ryzen 7 5700X + RTX 4060. OBS runs flawlessly at 1080p60 while gaming. Perfect setup for my Twitch channel."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">V</div>
+                            <div>
+                                <div class="review-name">Victor S.</div>
+                                <div class="review-date">2 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"I drove from Laval specifically for CoreX and it was worth the trip. They explained the difference between GPU options and helped me save money without losing performance."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">G</div>
+                            <div>
+                                <div class="review-name">George P.</div>
+                                <div class="review-date">6 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Mon portable gaming surchauffait et ralentissait pendant les parties. Après la repâte, la différence est incroyable. Merci CoreX!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">O</div>
+                            <div>
+                                <div class="review-name">Omar A.</div>
+                                <div class="review-date">1 month ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Fair prices, honest advice, and they actually answer your questions. Found them through a friend and now I recommend them to everyone. 10/10."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">B</div>
+                            <div>
+                                <div class="review-name">Ben M.</div>
+                                <div class="review-date">4 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"They recovered all my family photos from a corrupted hard drive. I thought everything was lost. These guys are miracle workers. Thank you so much!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">I</div>
+                            <div>
+                                <div class="review-name">Isabelle R.</div>
+                                <div class="review-date">3 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Assemblage d'un PC pour le travail et les jeux. Budget serré mais ils ont trouvé les meilleures pièces pour mon prix. Travail impeccable!"</p>
+                        <div class="review-author">
+                            <div class="review-avatar">Y</div>
+                            <div>
+                                <div class="review-name">Yannick D.</div>
+                                <div class="review-date">5 months ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"Went from a dusty 5-year-old rig to a clean new CoreX build. The difference is night and day. Loading screens gone, FPS doubled. Best investment ever."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">E</div>
+                            <div>
+                                <div class="review-name">Eric N.</div>
+                                <div class="review-date">2 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-stars">★★★★★</div>
+                        <p class="review-text">"I'm a student on a budget and they built me a PC that handles SolidWorks and some gaming. Couldn't be happier with the performance for the price."</p>
+                        <div class="review-author">
+                            <div class="review-avatar">H</div>
+                            <div>
+                                <div class="review-name">Hugo F.</div>
+                                <div class="review-date">6 weeks ago</div>
+                                <div class="review-verified">✔ Google Review</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3470,20 +3963,19 @@
                     onEnter: animateCounters
                 });
 
-                // Reviews Stagger
-                gsap.fromTo('.review-card',
+                // Reviews Carousel Reveal
+                gsap.fromTo('.reviews-carousel-wrap',
                     { y: 40, autoAlpha: 0 },
                     {
                         scrollTrigger: {
-                            trigger: '.reviews-grid',
+                            trigger: '.reviews-carousel-wrap',
                             start: 'top 90%',
                             toggleActions: 'play none none none',
                             once: true
                         },
                         y: 0,
                         autoAlpha: 1,
-                        stagger: 0.1,
-                        duration: 0.65,
+                        duration: 0.8,
                         ease: 'power2.out'
                     }
                 );

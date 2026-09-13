@@ -189,6 +189,28 @@
             text-transform: uppercase;
         }
 
+        .back-home-link {
+            display: inline-block;
+            margin-top: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .back-home-link:hover {
+            color: #fff;
+            border-color: rgba(166,30,43,0.6);
+            background: rgba(166,30,43,0.15);
+        }
+
         /* Screens */
         .screen {
             position: absolute; inset: 0;
@@ -589,6 +611,7 @@
         <div class="btn-row" style="margin-top: 14px;">
             <button class="btn btn-ghost" onclick="shareGame()"><span>Challenge Friends</span></button>
         </div>
+        <a href="../index.html" class="back-home-link">← Back to CoreX Website</a>
     </div>
 
     <!-- Screen: Game Over -->
@@ -959,18 +982,26 @@ function calculateDiscount(s) {
     return Math.min(50, Math.floor(s / 10));
 }
 
+function getPointsForPipe(s) {
+    if (s < 20) return 5;
+    if (s < 40) return 3;
+    return 2;
+}
+
 function updateHUD() {
     document.getElementById('score-val').textContent = score;
     const cfg = getLevelConfig(score);
-    document.getElementById('level-badge').textContent = `⚡ LVL ${cfg.level}: ${cfg.name}`;
+    const pts = getPointsForPipe(score);
+    document.getElementById('level-badge').textContent = `⚡ LVL ${cfg.level}: ${cfg.name} (+${pts}pts)`;
 
     const discount = calculateDiscount(score);
     document.getElementById('hud-discount').textContent = `$${discount} CAD`;
     
-    if (score >= 500) {
+    if (discount >= 50) {
         document.getElementById('hud-progress').textContent = 'MAX DISCOUNT REACHED ($50)';
     } else {
-        const needed = 10 - (score % 10);
+        const ptsPerDollar = 10;
+        const needed = ptsPerDollar - (score % ptsPerDollar);
         document.getElementById('hud-progress').textContent = `${needed} pt${needed === 1 ? '' : 's'} to +$1`;
     }
 }
@@ -1233,15 +1264,15 @@ function update(dt) {
         // Scoring when passing through pillar!
         if (!p.scored && p.x + (p.w || PIPE_W) < PLAYER.x + PLAYER.w * 0.3) {
             p.scored = true;
-            score++;
+            const pts = getPointsForPipe(score);
+            score += pts;
 
-            // Check if a dollar was earned: every 10 points up to 500
+            // Check if a dollar was earned
             const currentDiscount = calculateDiscount(score);
             if (currentDiscount > lastAwardedDiscount && currentDiscount <= 50) {
                 lastAwardedDiscount = currentDiscount;
                 triggerChaChingBanner(currentDiscount);
             } else {
-                // Sound effect for every other pillar passed (+1 point)
                 sfxPillarPoint();
             }
 
