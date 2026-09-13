@@ -1321,11 +1321,14 @@
         .reviews-carousel-wrap {
             position: relative;
             margin-top: 32px;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
         }
         .reviews-track {
             display: flex;
             gap: 20px;
-            animation: scrollReviews 60s linear infinite;
+            animation: scrollReviews 180s linear infinite;
             width: max-content;
         }
         .reviews-track:hover {
