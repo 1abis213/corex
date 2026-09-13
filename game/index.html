@@ -798,18 +798,20 @@ function sfxChaChing() {
 function sfxLevelUp() {
     [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
         setTimeout(() => {
-            if (!soundEnabled || !audioCtx) return;
-            const t0 = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(f, t0);
-            g.gain.setValueAtTime(0.22, t0);
-            g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.20);
-            osc.connect(g);
-            g.connect(audioCtx.destination);
-            osc.start(t0);
-            osc.stop(t0 + 0.20);
+            try {
+                if (!soundEnabled || !audioCtx) return;
+                const t0 = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(f, t0);
+                g.gain.setValueAtTime(0.22, t0);
+                g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.20);
+                osc.connect(g);
+                g.connect(audioCtx.destination);
+                osc.start(t0);
+                osc.stop(t0 + 0.20);
+            } catch(e) {}
         }, i * 80);
     });
 }
@@ -904,7 +906,8 @@ function onAssetsReady() {
 let state = 'start'; // 'start' | 'play' | 'over'
 let score = 0, currentLevel = 1;
 let lastAwardedDiscount = 0;
-let bestScore = parseInt(localStorage.getItem('cx_best') || '0');
+let bestScore = 0;
+try { bestScore = parseInt(localStorage.getItem('cx_best') || '0'); } catch(e) {}
 let lastTime = 0, gameTime = 0;
 
 let pipes = [];
@@ -1145,7 +1148,7 @@ function gameOver() {
     const isNew = score > bestScore;
     if (isNew) {
         bestScore = score;
-        localStorage.setItem('cx_best', bestScore);
+        try { localStorage.setItem('cx_best', bestScore); } catch(e) {}
     }
 
     const cfg = getLevelConfig(score);
