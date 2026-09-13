@@ -3919,11 +3919,11 @@
             document.getElementById('specGpu').textContent = p.gpu || '—';
             document.getElementById('specRam').textContent = p.ram || '—';
             document.getElementById('specStorage').textContent = p.storage || '—';
-            document.getElementById('specMobo').textContent = '—';
-            document.getElementById('specPsu').textContent = '—';
-            document.getElementById('specCooling').textContent = '—';
-            document.getElementById('specCase').textContent = '—';
-            document.getElementById('specOs').textContent = '—';
+            document.getElementById('specMobo').textContent = p.mobo || '—';
+            document.getElementById('specPsu').textContent = p.psu || '—';
+            document.getElementById('specCooling').textContent = p.cooling || '—';
+            document.getElementById('specCase').textContent = p['case'] || p.case || '—';
+            document.getElementById('specOs').textContent = p.os || '—';
 
             const priceDisplay = p.price ? (p.price.startsWith('$') ? p.price + ' CAD' : '$' + p.price + ' CAD') : '';
             const msg = encodeURIComponent(`Hello CoreX Montreal, I am interested in the ${p.name} (${priceDisplay}). Is this build available for local testing/pickup in Montreal?`);
@@ -3976,6 +3976,11 @@
                     gpu: p.gpu,
                     ram: p.ram,
                     storage: p.storage,
+                    mobo: p.mobo,
+                    psu: p.psu,
+                    cooling: p.cooling,
+                    'case': p.case,
+                    os: p.os,
                     category: 'build',
                     image_url: p.img,
                     status: 'available'
