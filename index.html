@@ -2251,7 +2251,15 @@
                 <p class="section-desc" data-i18n="services_desc">From surgical custom PC builds to delicate chip repasting and data recovery — all executed in Montreal.</p>
             </div>
 
-            <div class="services-grid">
+            <div class="catalog-loading" id="servicesLoading" style="display:none;">
+                <div class="spinner"></div>
+                Loading services...
+            </div>
+
+            <div class="services-grid" id="servicesGrid" style="display:none;"></div>
+
+            <!-- Fallback: static services shown if GS fetch fails -->
+            <div class="services-grid" id="servicesGridFallback">
                 
                 <!-- 1. Custom PC Build -->
                 <div class="service-card">
@@ -2343,7 +2351,7 @@
                     <button class="service-btn" onclick="openContactModal('Service: Diagnostics')" data-i18n="btn_inquire">Inquire via Chat / Call</button>
                 </div>
 
-            </div>
+            </div><!-- end services-grid fallback -->
         </div>
     </section>
 
@@ -3990,6 +3998,61 @@
         }
 
         document.addEventListener('DOMContentLoaded', initInventory);
+
+        // --- GOOGLE SHEETS SERVICES INVENTORY ---
+        const GS_SERVICES_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/YOUR_SERVICES_SHEET_ID/pub?gid=0&single=true&output=csv';
+
+        function renderServiceCard(s) {
+            const name = s.name || '';
+            const price = s.price || '';
+            const desc = s.description || '';
+            const icon = s.icon || '🔧';
+            const category = s.category || '';
+            return `
+                <div class="service-card" data-service-category="${category}">
+                    <div class="service-icon-wrap">${icon}</div>
+                    <h3 class="service-title">${name}</h3>
+                    <div class="service-price">${price}</div>
+                    <p class="service-desc">${desc}</p>
+                    <button class="service-btn" onclick="openContactModal('Service: ${name.replace(/'/g, "\\'")}')" data-i18n="btn_inquire">Inquire via Chat / Call</button>
+                </div>`;
+        }
+
+        async function initServicesInventory() {
+            if (GS_SERVICES_CSV_URL.includes('YOUR_SERVICES_SHEET_ID')) return;
+
+            const loading = document.getElementById('servicesLoading');
+            const grid = document.getElementById('servicesGrid');
+            const fallback = document.getElementById('servicesGridFallback');
+
+            try {
+                loading.style.display = '';
+                const res = await fetch(GS_SERVICES_CSV_URL + '&_=' + Date.now());
+                if (!res.ok) throw new Error('Fetch failed');
+                const csv = await res.text();
+                const rows = parseCSV(csv);
+
+                if (rows.length === 0) throw new Error('No data');
+
+                loading.style.display = 'none';
+                grid.style.display = '';
+                fallback.style.display = 'none';
+                grid.innerHTML = rows.map(s => renderServiceCard(s)).join('');
+
+                if (typeof gsap !== 'undefined') {
+                    gsap.fromTo('#servicesGrid .service-card',
+                        { y: 30, autoAlpha: 0 },
+                        { y: 0, autoAlpha: 1, stagger: 0.06, duration: 0.5, ease: 'power2.out' }
+                    );
+                }
+            } catch (e) {
+                loading.style.display = 'none';
+                grid.style.display = 'none';
+                fallback.style.display = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initServicesInventory);
 
         // --- GSAP PRELOADER & SCROLLTRIGGER ORCHESTRATION ---
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
